@@ -1,18 +1,31 @@
 import random
-import secrets
 import time
 start_time = time.time()
-print ("Welcome to the November 2021 Upper Arlington School Board Election simulation!")
-print ("In Nov 2020, there were 24,622 ballots cast. 61.5% for Biden and 36.7% for Trump, and 1.8% for others. In other races, 49.1% voted for State Senator Kunze(R), and 50.9% voted for Rep. Stivers(R). In previous November elections, 23,309 ballots were cast in 2016, 15,526 in 2017, 21,043 in 2018 and 9,556 in 2019.")
-print ("Let's run a simulation of the upcoming school board election.")
 
-demPrefs = {'Liz': .02, 'Lou': .05, 'Nidhi':.98, 'Scott':.40, 'Carol':.70}
+# ELECTION VARIABLES
+candidate_names = ['Liz', 'Lou', 'Nidhi', 'Scott', 'Carol']
+numOfBallotWinners = 2
+
+# ELECTORATE VARIABLES
+demPrefs = {'Liz': .02, 'Lou': .05, 'Nidhi':.98, 'Scott':.60, 'Carol':.70}
 indPrefs = {'Liz': .20, 'Lou': .45, 'Nidhi':.35, 'Scott':.70, 'Carol':.45}
 gopPrefs = {'Liz': .90, 'Lou': .98, 'Nidhi':.02, 'Scott':.20, 'Carol':.05}
 
 gopVoteShare = .39
 indVoteShare = .15
 demVoteShare = 1-(indVoteShare+gopVoteShare)
+
+#SIMULATION VARIABLES
+numOfSims = 100
+totalVoters = 100
+electionWins = {}
+electionReturns = {}
+ballotChoice = {}
+
+# OPENING MESSAGE
+print ("Welcome to the November 2021 Upper Arlington School Board Election simulation!")
+print ("In Nov 2020, there were 24,622 ballots cast. 61.5% for Biden and 36.7% for Trump, and 1.8% for others. In other races, 49.1% voted for State Senator Kunze(R), and 50.9% voted for Rep. Stivers(R). In previous November elections, 23,309 ballots were cast in 2016, 15,526 in 2017, 21,043 in 2018 and 9,556 in 2019.")
+print ("Let's run a simulation of the upcoming school board election.")
 print("The electorate will be composed of " + str(round(float(gopVoteShare*100))) + "% partisan Trump voters, " + str(round(float(indVoteShare*100))) + "% Biden/Stivers voters and " + str(round(float(demVoteShare*100)))+"% partisan Democrats.")
 
 
@@ -28,13 +41,6 @@ print("A Biden/Stivers voter's choice probabilities:")
 for k, v in indPrefs.items():
     print(k + " " + str(int(v*100))+ "%")
 
-# class Voter:
-#     def __init__(self, profile):
-#         self.profile = profile
-#         print("A new " + profile + " voter has been created!")
-
-
-
 def vote(profile):
     if profile=='Dem':
         voterPref = demPrefs
@@ -44,22 +50,22 @@ def vote(profile):
         voterPref = gopPrefs
     else:
         print("ERROR!the vote function didn't work!!")
-    ballotChoice = {'Liz': 0, 'Lou': 0, 'Nidhi':0, 'Scott':0, 'Carol':0}
-    for i in range(5):
+    for element, index in enumerate(candidate_names): # initialize the ballotChoice dictionary
+        ballotChoice[index] = 0
+    for i in range(len(ballotChoice)):
         for k, v in ballotChoice.items():
             if random.SystemRandom().uniform(0,1) < voterPref.get(k):
                 ballotChoice[k]+=1
                 
     prefSorted = sorted(ballotChoice.items(), key=lambda x: x[1], reverse=True)
-#     for k, v in prefSorted:
-#         print (k + ' is receiving ' + str(v))
 
     voteCastDict = dict(prefSorted[0:2])
     voteCast = list(voteCastDict.keys())
     return voteCast
 
 # Election return system
-electionReturns = {'Liz': 0, 'Lou': 0, 'Nidhi':0, 'Scott':0, 'Carol':0}
+for element, index in enumerate(candidate_names):
+    electionReturns[index] = 0
 
 def addReturns(ballot):
     for i in ballot:
@@ -70,9 +76,7 @@ def addReturns(ballot):
 
 # Do the actual election
 
-def oneElection():
-    #totalVoters = random.randint(1300, 1500) # it doesn't need to be the full 19000 to 21000.
-    totalVoters = 14500
+def oneElection():    
     gopVoters = random.SystemRandom().uniform(gopVoteShare-.01,gopVoteShare+.01)
     indVoters = random.SystemRandom().uniform(indVoteShare-.02,indVoteShare+.02)
     demVoters = 1 - (gopVoters+indVoters)
@@ -98,29 +102,26 @@ def oneElection():
     for k, v in returnsSorted:
         print (k + ' - ' + str(v))
 
-    returnsDict = dict(returnsSorted[0:2])
+    returnsDict = dict(returnsSorted[0:numOfBallotWinners])
     winners = list(returnsDict.keys())
-   #  print("The winners are "+ str(winners[0]) + " and " + str(winners[1]))
+    # print("The winners are "+ str(winners[0]) + " and " + str(winners[1]))
     return winners
 
-electionWins = {'Liz': 0, 'Lou': 0, 'Nidhi':0, 'Scott':0, 'Carol':0}
+for element, index in enumerate(candidate_names):
+    electionWins[index] = 0
 
 def addWins(electionResults):
     for i in electionResults:
-        # print (electionResults)
         for k, v in electionWins.items():
             if k == i:
                 electionWins[k]+=1
 
-numOfSims = 1
 print("Let's simulate " + str(numOfSims) + " elections and calculate each candidate's probability of winning.")
 
-# your code
-
 for i in range(numOfSims):
- #   print (i)
     addWins(oneElection())
-    electionReturns = {'Liz': 0, 'Lou': 0, 'Nidhi':0, 'Scott':0, 'Carol':0}
+    for element, index in enumerate(candidate_names): # reinitialize the electionReturns dict back to zeros for the next election
+        electionReturns[index] = 0
 
 
 # Finally, let's count up the number of wins.
@@ -131,8 +132,3 @@ for k, v in winsSorted:
     
 e = time.time() - start_time
 print("%02d:%02d:%02d" % (e // 3600, (e % 3600 // 60), (e % 60 // 1)))
-
-# aDemocrat = Voter(self,"Dem")
-# aDemocrat.vote('Dem')
-
-
