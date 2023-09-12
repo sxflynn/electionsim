@@ -1,0 +1,24 @@
+{
+    "candidates":[
+        "Liz",
+        "Lou",
+        "Nidhi",
+        "Scott",
+        "Carol"
+    ],
+    "ballotWinners":"2",
+    "voterProfiles":{
+        "demPrefs":[{"Liz": ".02", "Lou": ".05", "Nidhi":".98", "Scott":".60", "Carol":".70"}],
+        "indPrefs":[{"Liz": ".20", "Lou": ".45", "Nidhi":".35", "Scott":".70", "Carol":".45"}],
+       "gopPrefs":[{"Liz": ".90", "Lou": ".98", "Nidhi":".02", "Scott":".20", "Carol":".05"}]
+    },
+    "electorate":{
+        "gopVoteShare":".39",
+        "indVoteShare":".15",
+        "demVoteShare":"0.46"
+    },
+    "electionSettings":{
+        "numOfSims": "100",
+        "totalVoters":"100"
+    }
+}

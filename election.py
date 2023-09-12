@@ -1,5 +1,6 @@
 import random
 import time
+import jsonReader
 start_time = time.time()
 
 # ELECTION VARIABLES
