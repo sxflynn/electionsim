@@ -1,11 +1,10 @@
 import random
 import time
 import jsonReader
+
 start_time = time.time()
 
 # ELECTION VARIABLES
-candidate_names = ['Liz', 'Lou', 'Nidhi', 'Scott', 'Carol']
-numOfBallotWinners = 2
 
 # ELECTORATE VARIABLES
 demPrefs = {'Liz': .02, 'Lou': .05, 'Nidhi':.98, 'Scott':.60, 'Carol':.70}
@@ -17,7 +16,6 @@ indVoteShare = .15
 demVoteShare = 1-(indVoteShare+gopVoteShare)
 
 #SIMULATION VARIABLES
-numOfSims = 100
 totalVoters = 100
 electionWins = {}
 electionReturns = {}
@@ -51,7 +49,7 @@ def vote(profile):
         voterPref = gopPrefs
     else:
         print("ERROR!the vote function didn't work!!")
-    for element, index in enumerate(candidate_names): # initialize the ballotChoice dictionary
+    for element, index in enumerate(jsonReader.candidate_names): # initialize the ballotChoice dictionary
         ballotChoice[index] = 0
     for i in range(len(ballotChoice)):
         for k, v in ballotChoice.items():
@@ -65,7 +63,7 @@ def vote(profile):
     return voteCast
 
 # Election return system
-for element, index in enumerate(candidate_names):
+for element, index in enumerate(jsonReader.candidate_names):
     electionReturns[index] = 0
 
 def addReturns(ballot):
@@ -103,12 +101,12 @@ def oneElection():
     for k, v in returnsSorted:
         print (k + ' - ' + str(v))
 
-    returnsDict = dict(returnsSorted[0:numOfBallotWinners])
+    returnsDict = dict(returnsSorted[0:jsonReader.numOfBallotWinners])
     winners = list(returnsDict.keys())
     # print("The winners are "+ str(winners[0]) + " and " + str(winners[1]))
     return winners
 
-for element, index in enumerate(candidate_names):
+for element, index in enumerate(jsonReader.candidate_names):
     electionWins[index] = 0
 
 def addWins(electionResults):
@@ -117,11 +115,11 @@ def addWins(electionResults):
             if k == i:
                 electionWins[k]+=1
 
-print("Let's simulate " + str(numOfSims) + " elections and calculate each candidate's probability of winning.")
+print("Let's simulate " + str(jsonReader.numOfSims) + " elections and calculate each candidate's probability of winning.")
 
-for i in range(numOfSims):
+for i in range(jsonReader.numOfSims):
     addWins(oneElection())
-    for element, index in enumerate(candidate_names): # reinitialize the electionReturns dict back to zeros for the next election
+    for element, index in enumerate(jsonReader.candidate_names): # reinitialize the electionReturns dict back to zeros for the next election
         electionReturns[index] = 0
 
 
@@ -129,7 +127,7 @@ for i in range(numOfSims):
 winsSorted = sorted(electionWins.items(), key=lambda x: x[1], reverse=True)
 
 for k, v in winsSorted:
-    print (k + ' - ' + str(v) + " - " + str(round(float(v/numOfSims)*100, 1)) + "% chance of being elected.")
+    print (k + ' - ' + str(v) + " - " + str(round(float(v/jsonReader.numOfSims)*100, 1)) + "% chance of being elected.")
     
 e = time.time() - start_time
 print("%02d:%02d:%02d" % (e // 3600, (e % 3600 // 60), (e % 60 // 1)))
