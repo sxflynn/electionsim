@@ -7,14 +7,14 @@
         "Carol"
     ],
     "voterProfiles":{
-        "demPrefs":[{"Liz": 0.02, "Lou": 0.05, "Nidhi":0.98, "Scott":0.60, "Carol":0.70}],
-        "indPrefs":[{"Liz": 0.20, "Lou": 0.45, "Nidhi":0.35, "Scott":0.70, "Carol":0.45}],
-       "gopPrefs":[{"Liz": 0.90, "Lou": 0.98, "Nidhi":0.02, "Scott":0.20, "Carol":0.05}]
+        "DEM":{"Liz": 0.02, "Lou": 0.05, "Nidhi":0.98, "Scott":0.60, "Carol":0.70},
+        "IND":{"Liz": 0.20, "Lou": 0.45, "Nidhi":0.35, "Scott":0.70, "Carol":0.45},
+       "GOP":{"Liz": 0.90, "Lou": 0.98, "Nidhi":0.02, "Scott":0.20, "Carol":0.05}
     },
     "electorate":{
-        "gopVoteShare":0.39,
-        "indVoteShare":0.15,
-        "demVoteShare":0.46
+        "GOP":0.39,
+        "IND":0.15,
+        "DEM":0.46
     },
     "electionSettings":{
         "numOfSims": 100,

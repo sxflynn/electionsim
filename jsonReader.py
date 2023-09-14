@@ -10,13 +10,11 @@ candidate_names = jsonObject['candidates']
 numOfBallotWinners = jsonObject["electionSettings"]["ballotWinners"]
 numOfSims = jsonObject["electionSettings"]["numOfSims"]
 totalVoters = jsonObject["electionSettings"]["totalVoters"]
+voterProfiles = jsonObject["voterProfiles"]
 
 numOfVoterProfiles = len(jsonObject['voterProfiles'])
 
 electorateData = jsonObject['electorate']
-
-
-# electorateData = {"gopVoteShare": 0.4, "indVoteShare": 0.15, "demVoteShare": 0.46}
 
 def getElectorate(electorateObj):
     ##checking that it adds up to 1.0
@@ -29,14 +27,13 @@ def getElectorate(electorateObj):
         print ("It adds to 1!")
         return electorateObj
     
-    # TODO : Write simple algo for when totalOne != 1
-    abbsDiff = round((abs(totalOne - 1)),2)
-    electorateSorted = sorted(electorateObj.items(), key=lambda x: x[1], reverse=True)
-    # print (electorateSorted)
-    electDict = dict(electorateSorted)
-    # print (electDict)
-    if (totalOne > 1):
-        return
-    #else: ## forcing a 1.0 sum by subtracting sum of smallest values from largest value
+    # # TODO : Write simple algo for when totalOne != 1
+    # abbsDiff = round((abs(totalOne - 1)),2)
+    # electorateSorted = sorted(electorateObj.items(), key=lambda x: x[1], reverse=True)
+    # # print (electorateSorted)
+    # electDict = dict(electorateSorted)
+    # # print (electDict)
+    # if (totalOne > 1):
+    #     return
+    # #else: ## forcing a 1.0 sum by subtracting sum of smallest values from largest value
         
-# getElectorate(electorateData)
