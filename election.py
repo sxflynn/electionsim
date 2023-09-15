@@ -8,30 +8,12 @@ electionWins = {}
 electionReturns = {}
 ballotChoice = {}
 
-# OPENING MESSAGE
-# print ("Welcome to the November 2021 Upper Arlington School Board Election simulation!")
-# print ("In Nov 2020, there were 24,622 ballots cast. 61.5% for Biden and 36.7% for Trump, and 1.8% for others. In other races, 49.1% voted for State Senator Kunze(R), and 50.9% voted for Rep. Stivers(R). In previous November elections, 23,309 ballots were cast in 2016, 15,526 in 2017, 21,043 in 2018 and 9,556 in 2019.")
-# print ("Let's run a simulation of the upcoming school board election.")
-# print("The electorate will be composed of " + str(round(float(gopVoteShare*100))) + "% partisan Trump voters, " + str(round(float(indVoteShare*100))) + "% Biden/Stivers voters and " + str(round(float(demVoteShare*100)))+"% partisan Democrats.")
-
-
-# print("A party line Democratic voter's choice probabilities:")
-# for k, v in demPrefs.items():
-#     print(k + " " + str(int(v*100))+ "%")
-
-# print("A party line Trump voter's choice probabilities:")
-# for k, v in gopPrefs.items():
-#     print(k + " " + str(int(v*100))+ "%")
-
-# print("A Biden/Stivers voter's choice probabilities:")
-# for k, v in indPrefs.items():
-#     print(k + " " + str(int(v*100))+ "%")
-
 def vote(profile):
     voterPref = voterProfiles[profile]
 
     for element, index in enumerate(candidate_names): # initialize the ballotChoice dictionary
         ballotChoice[index] = 0
+    
     for i in range(len(ballotChoice)):
         for k, v in ballotChoice.items():
             if random.SystemRandom().uniform(0,1) < voterPref.get(k):
