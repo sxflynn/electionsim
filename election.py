@@ -8,25 +8,29 @@ electionWins = {}
 electionReturns = {}
 ballotChoice = {}
 
+def initDictionary(inputDict, names): #initialize dictionary
+    for element, index in enumerate(names): 
+        inputDict[index] = 0
+
+def sortItems(itemInput):
+    outputList = sorted(itemInput.items(), key=lambda x: x[1], reverse=True)
+    return outputList
+
 def vote(profile):
     voterPref = voterProfiles[profile]
 
-    for element, index in enumerate(candidate_names): # initialize the ballotChoice dictionary
-        ballotChoice[index] = 0
+    initDictionary(ballotChoice,candidate_names)
     
     for i in range(len(ballotChoice)):
         for k, v in ballotChoice.items():
             if random.SystemRandom().uniform(0,1) < voterPref.get(k):
                 ballotChoice[k]+=1
                 
-    prefSorted = sorted(ballotChoice.items(), key=lambda x: x[1], reverse=True)
+    prefSorted = sortItems(ballotChoice)
 
     voteCastDict = dict(prefSorted[0:numOfBallotWinners])
     voteCast = list(voteCastDict.keys())
     return voteCast
-
-for element, index in enumerate(candidate_names): #initialize the electionReturns dictionary
-    electionReturns[index] = 0
 
 def addReturns(ballot):
     for i in ballot:
@@ -36,31 +40,13 @@ def addReturns(ballot):
              #    print (electionReturns)
 
 def oneElection():    
-    # gopVoters = gopVoteShare
-    # indVoters = indVoteShare
-    # demVoters = 1 - (gopVoters+indVoters)
-    # print("Turnout is " + str(totalVoters) + " total voters")
-    # print(str(int(gopVoters*100)) + "% of voters are party line Trump voters")
-    # print(str(int(indVoters*100)) + "% of voters are Biden/Stivers voters")
-    # print(str(int(demVoters*100)) + "% of voters are party line Democratic voters")
-    
     for party in electorateData:
         for w in range(int(totalVoters*float(electorateData[party]))):
             addReturns(vote(party))
-
-    returnsSorted = sorted(electionReturns.items(), key=lambda x: x[1], reverse=True)
-
-    #print ("Now let's print the final election returns!")
-    # for k, v in returnsSorted:
-    #     print (k + ' - ' + str(v))
-
+    returnsSorted = sortItems(electionReturns)
     returnsDict = dict(returnsSorted[0:numOfBallotWinners])
     winners = list(returnsDict.keys())
     return winners
-
-
-for element, index in enumerate(candidate_names): #initialize the electionWins dictionary
-    electionWins[index] = 0
 
 def addWins(electionResults):
     for i in electionResults:
@@ -68,19 +54,21 @@ def addWins(electionResults):
             if k == i:
                 electionWins[k]+=1
 
-# print("Let's simulate " + str(numOfSims) + " elections and calculate each candidate's probability of winning.")
+def printWinnters(inputList):
+    for k, v in inputList:
+        print (k + ' - ' + str(v) + " - " + str(round(float(v/numOfSims)*100, 1)) + "% chance of being elected.")                
+
+
+initDictionary(electionReturns,candidate_names) #initialize the electionReturns dictionary
+initDictionary(electionWins,candidate_names) #initialize the electionReturns dictionary
 
 for i in range(numOfSims):
     addWins(oneElection())
-    for element, index in enumerate(candidate_names): # reinitialize the electionReturns dict back to zeros for the next election
-        electionReturns[index] = 0
+    initDictionary(electionReturns,candidate_names) # reinitialize the electionReturns dict back to zeros for the next election
 
+winsSorted = sortItems(electionWins) # Count the number of wins.
 
-# Finally, let's count up the number of wins.
-winsSorted = sorted(electionWins.items(), key=lambda x: x[1], reverse=True)
-
-for k, v in winsSorted:
-    print (k + ' - ' + str(v) + " - " + str(round(float(v/numOfSims)*100, 1)) + "% chance of being elected.")
+printWinnters(winsSorted)
     
 e = time.time() - start_time
 print("Running time %02d:%02d:%02d" % (e // 3600, (e % 3600 // 60), (e % 60 // 1)))
