@@ -6,74 +6,43 @@ def sameList(list1, list2): #returns true if two lists are identical
     return set1 == set2
 
 def checkElectionJson(jsonData):    
-    # Extract candidates, voter profiles, and electorate data
-    candidates = jsonData.get("candidates", [])
+
+    candidates = jsonData.get("candidates", [])  # Extract candidates, voter profiles, and electorate data
     voterProfiles = jsonData.get("voterProfiles", {})
     electorate = jsonData.get("electorate", {})
     
-    # Check if candidates match the voter profiles
-    for party, profiles in voterProfiles.items():
+    for party, profiles in voterProfiles.items(): # Check if candidates match the voter profiles
         if not sameList(candidates, profiles.keys()):
+            print("The candidates list does not match the candidates in the voter profiles.")
             return False
     
-    # Check if parties in electorate match the voter profiles
-    if not sameList(list(electorate.keys()), list(voterProfiles.keys())):
+    if not sameList(list(electorate.keys()), list(voterProfiles.keys())): # Check if parties in electorate match the voter profiles
+        print("The parties listed in the electorate key do not match the parties in the voter profiles.")
         return False
     
     return True
 
-
-# def getElectorate(electorateObj):
-#     ##checking that it adds up to 1.0
-#     totalOne = 0
-#     for k in electorateObj.values():
-#         totalOne += k
-#     print (totalOne)
-    
-#     if (totalOne == 1.0):
-#         print ("It adds to 1!")
-#         return electorateObj
-    
-#     # # TODO : Write simple algo for when totalOne != 1
-#     # abbsDiff = round((abs(totalOne - 1)),2)
-#     # electorateSorted = sorted(electorateObj.items(), key=lambda x: x[1], reverse=True)
-#     # # print (electorateSorted)
-#     # electDict = dict(electorateSorted)
-#     # # print (electDict)
-#     # if (totalOne > 1):
-#     #     return
-#     # #else: ## forcing a 1.0 sum by subtracting sum of smallest values from largest value
-        
-
-
-# Open the JSON file for reading
 try:
-    with open('config.json', 'r') as electionFile:
-        jsonObject = json.load(electionFile)
+    with open("config.json", 'r') as jsonFile:
+        jsonObject = json.load(jsonFile)
         ## Initializing JSON data to variables
+        if not checkElectionJson(jsonObject):
+            print("JSON data integrity check failed. Exiting.")
         
-        print ("checkElection is " + str(checkElectionJson(jsonObject)))
-        
-        candidate_names = jsonObject['candidates']
-
+        candidate_names = jsonObject["candidates"]
         numOfBallotWinners = jsonObject["electionSettings"]["ballotWinners"]
-
         numOfSims = jsonObject["electionSettings"]["numOfSims"]
-
         totalVoters = jsonObject["electionSettings"]["totalVoters"]
-
         voterProfiles = jsonObject["voterProfiles"]
-
-
         message = jsonObject["message"]
-
-        numOfVoterProfiles = len(jsonObject['voterProfiles'])
-
-        electorateData = jsonObject['electorate']
-
+        electorateData = jsonObject["electorate"]
+        settingsData = jsonObject["electionSettings"]
 
 except json.JSONDecodeError:
     print("Failed to load election data")
-
-
-
+except FileNotFoundError:
+    print("The config.json file does not exist.")
+except Exception as e:
+    print(f"An error occurred: {str(e)}")
+finally:
+    jsonFile.close()
