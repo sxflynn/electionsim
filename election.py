@@ -4,8 +4,6 @@ import multiprocessing
 from jsonReader import *
 from datetime import datetime
 
-
-
 electionWins = {}
 electionReturns = {}
 ballotChoice = {}
@@ -39,13 +37,15 @@ def addReturns(ballot):
             if key == i:
                 electionReturns[key]+=1
 
-def oneElection():    
+def peopleDecide(electorateData):
     for party in electorateData:
-        for w in range(int(totalVoters*float(electorateData[party]))):
-            addReturns(vote(party))
-    returnsSorted = sortItems(electionReturns)
-    returnsDict = dict(returnsSorted[0:numOfBallotWinners])
-    winners = list(returnsDict.keys())
+            for w in range(int(totalVoters*float(electorateData[party]))):
+                addReturns(vote(party))
+
+def oneElection():    
+    peopleDecide(electorateData)
+    returnsSorted = dict(sortItems(electionReturns)[0:numOfBallotWinners])
+    winners = list(returnsSorted.keys())
     return winners
 
 def addWins(electionResults):
