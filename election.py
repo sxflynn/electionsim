@@ -2,6 +2,7 @@ import random
 import time
 from jsonReader import *
 from datetime import datetime
+import concurrent.futures
 
 electionWins = {}
 electionReturns = {}
@@ -32,18 +33,19 @@ def vote(profile):
 
 def addReturns(ballot):
     for i in ballot:
-        for key, val in electionReturns.items():
+        for key, _ in electionReturns.items():
             if key == i:
                 electionReturns[key]+=1
 
 def peopleDecide(electorateData):
     for party in electorateData:
-            for w in range(int(totalVoters*float(electorateData[party]))):
+            for _ in range(int(totalVoters*float(electorateData[party]))):
                 addReturns(vote(party))
 
 
 def oneElection():    
-    peopleDecide(electorateData)
+    with concurrent.futures.ProcessPoolExecutor() as executor: #multiprocessing
+        executor.map(peopleDecide, electorateData)
     returnsSorted = dict(sortItems(electionReturns)[0:numOfBallotWinners])
     winners = list(returnsSorted.keys())
     return winners
