@@ -95,8 +95,7 @@ if __name__ == "__main__":
     initDictionary(electionReturns,candidate_names) #initialize the electionReturns dictionary
     initDictionary(electionWins,candidate_names) #initialize the electionReturns dictionary
     
-    runElections(numOfSims
-                 )
+    runElections(numOfSims)
     winsSorted = sortItems(electionWins) # Count the number of wins.
 
     outputAsJson(winsSorted)
