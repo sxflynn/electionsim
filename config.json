@@ -17,9 +17,10 @@
         "DEM":0.46
     },
     "electionSettings":{
-        "numOfSims": 100,
+        "numOfSims": 50,
         "totalVoters":100,
-        "ballotWinners":2
+        "ballotWinners":2,
+        "multiprocessing":false
     },
     "message":"Write your message here"
 }

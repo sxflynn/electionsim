@@ -44,8 +44,11 @@ def peopleDecide(electorateData):
 
 
 def oneElection():    
-    with concurrent.futures.ProcessPoolExecutor() as executor: #multiprocessing
-        executor.map(peopleDecide, electorateData)
+    if (multiP == True):
+        with concurrent.futures.ProcessPoolExecutor() as executor: #multiprocessing
+            executor.map(peopleDecide, electorateData)
+    else:
+        peopleDecide(electorateData)
     returnsSorted = dict(sortItems(electionReturns)[0:numOfBallotWinners])
     winners = list(returnsSorted.keys())
     return winners
@@ -91,7 +94,9 @@ def outputAsJson(winnerList):
 def printTime(time):
     print("Running time %02d:%02d:%02d.%03d" % (time // 3600, (time % 3600 // 60), (time % 60 // 1), (time % 1 * 1000)))
 
+
 if __name__ == "__main__":
+    
     startTime = time.time()
 
     initDictionary(electionReturns,candidate_names) #initialize the electionReturns dictionary
