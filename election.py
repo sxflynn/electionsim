@@ -1,6 +1,5 @@
 import random
 import time
-import multiprocessing
 from jsonReader import *
 from datetime import datetime
 
@@ -18,8 +17,8 @@ def sortItems(itemInput):
 
 def decideVote(ballotDict,preferences):
     initDictionary(ballotDict,candidate_names)
-    for i in range(len(ballotDict)):
-            for k, v in ballotDict.items():
+    for _ in range(len(ballotDict)):
+            for k, _ in ballotDict.items():
                 if random.SystemRandom().uniform(0,1) < preferences.get(k):
                     ballotDict[k]+=1
 
@@ -42,17 +41,23 @@ def peopleDecide(electorateData):
             for w in range(int(totalVoters*float(electorateData[party]))):
                 addReturns(vote(party))
 
+
 def oneElection():    
     peopleDecide(electorateData)
     returnsSorted = dict(sortItems(electionReturns)[0:numOfBallotWinners])
     winners = list(returnsSorted.keys())
     return winners
-
+    
 def addWins(electionResults):
     for i in electionResults:
-        for key, val in electionWins.items():
+        for key, _ in electionWins.items():
             if key == i:
                 electionWins[key]+=1
+
+def runElections(howMany):
+    for _ in range(howMany):
+        addWins(oneElection())
+        initDictionary(electionReturns,candidate_names) # reinitialize the electionReturns dict back to zeros for the next election
 
 def percentDisplay(num):
     percentString = str(round(float(num/numOfSims)*100, 1)) + "%"
@@ -61,17 +66,6 @@ def percentDisplay(num):
 def printWinnters(inputList):
     for k, v in inputList:
         print (k + ' - ' + str(v) + " - " + percentDisplay(v) + " chance of being elected.")
-
-initDictionary(electionReturns,candidate_names) #initialize the electionReturns dictionary
-initDictionary(electionWins,candidate_names) #initialize the electionReturns dictionary
-
-startTime = time.time()
-
-for i in range(numOfSims):
-    addWins(oneElection())
-    initDictionary(electionReturns,candidate_names) # reinitialize the electionReturns dict back to zeros for the next election
-
-winsSorted = sortItems(electionWins) # Count the number of wins.
 
 def outputAsJson(winnerList):
     candidates = {}
@@ -92,7 +86,19 @@ def outputAsJson(winnerList):
     }
     print(json.dumps(combinedJson, indent = 3))
 
-outputAsJson(winsSorted)
+def printTime(time):
+    print("Running time %02d:%02d:%02d.%03d" % (time // 3600, (time % 3600 // 60), (time % 60 // 1), (time % 1 * 1000)))
 
-e = time.time() - startTime
-print("Running time %02d:%02d:%02d.%03d" % (e // 3600, (e % 3600 // 60), (e % 60 // 1), (e % 1 * 1000)))
+if __name__ == "__main__":
+    startTime = time.time()
+
+    initDictionary(electionReturns,candidate_names) #initialize the electionReturns dictionary
+    initDictionary(electionWins,candidate_names) #initialize the electionReturns dictionary
+    
+    runElections(numOfSims
+                 )
+    winsSorted = sortItems(electionWins) # Count the number of wins.
+
+    outputAsJson(winsSorted)
+    stopWatch = time.time() - startTime
+    printTime(stopWatch)
