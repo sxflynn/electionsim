@@ -19,9 +19,10 @@ def sortItems(itemInput):
 def decideVote(ballotDict,preferences):
     initDictionary(ballotDict,candidate_names)
     for _ in range(len(ballotDict)):
-            for k, _ in ballotDict.items():
-                if random.SystemRandom().uniform(0,1) < preferences.get(k):
-                    ballotDict[k]+=1
+        for k, _ in ballotDict.items():
+            rand = random.SystemRandom().uniform(0,1)
+            if rand < preferences.get(k):
+                ballotDict[k]+=1
 
 def vote(profile):
     voterPref = voterProfiles[profile]
@@ -41,6 +42,7 @@ def peopleDecide(electorateData):
     for party in electorateData:
             for _ in range(int(totalVoters*float(electorateData[party]))):
                 addReturns(vote(party))
+    print("electionReturns are " + str(electionReturns))
 
 
 def oneElection():    
@@ -51,6 +53,7 @@ def oneElection():
         peopleDecide(electorateData)
     returnsSorted = dict(sortItems(electionReturns)[0:numOfBallotWinners])
     winners = list(returnsSorted.keys())
+    print("Winners are " + str(winners))
     return winners
     
 def addWins(electionResults):
