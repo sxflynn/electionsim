@@ -32,7 +32,6 @@ try:
         candidate_names = jsonObject["candidates"]
         numOfBallotWinners = jsonObject["electionSettings"]["ballotWinners"]
         numOfSims = jsonObject["electionSettings"]["numOfSims"]
-        multiP = jsonObject["electionSettings"]["multiprocessing"]
         totalVoters = jsonObject["electionSettings"]["totalVoters"]
         voterProfiles = jsonObject["voterProfiles"]
         message = jsonObject["message"]
