@@ -42,18 +42,14 @@ def peopleDecide(electorateData):
     for party in electorateData:
             for _ in range(int(totalVoters*float(electorateData[party]))):
                 addReturns(vote(party))
-    print("electionReturns are " + str(electionReturns))
+    #print("electionReturns are " + str(electionReturns))
 
 
 def oneElection():    
-    if (multiP == True):
-        with concurrent.futures.ProcessPoolExecutor() as executor: #multiprocessing
-            executor.map(peopleDecide, electorateData)
-    else:
-        peopleDecide(electorateData)
+    peopleDecide(electorateData)
     returnsSorted = dict(sortItems(electionReturns)[0:numOfBallotWinners])
     winners = list(returnsSorted.keys())
-    print("Winners are " + str(winners))
+    #print("Winners are " + str(winners))
     return winners
     
 def addWins(electionResults):
