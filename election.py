@@ -13,14 +13,14 @@ def initDictionary(inputDict, names): #initialize dictionary
         inputDict[index] = 0
 
 def sortItems(itemInput):
-    outputList = sorted(itemInput.items(), key=lambda x: x[1], reverse=True)
+    outputList = sorted(itemInput.items(), key=lambda x: (x[1], random.random()), reverse=True) # tie-breaker
     return outputList
 
 def decideVote(ballotDict,preferences):
     initDictionary(ballotDict,candidate_names)
-    for _ in range(len(ballotDict)):
+    for _ in range(3): # lower values increase speed and variation
+        rand = random.SystemRandom().uniform(0,1)
         for k, _ in ballotDict.items():
-            rand = random.SystemRandom().uniform(0,1)
             if rand < preferences.get(k):
                 ballotDict[k]+=1
 
@@ -49,7 +49,6 @@ def oneElection():
     peopleDecide(electorateData)
     returnsSorted = dict(sortItems(electionReturns)[0:numOfBallotWinners])
     winners = list(returnsSorted.keys())
-    #print("Winners are " + str(winners))
     return winners
     
 def addWins(electionResults):
@@ -57,19 +56,21 @@ def addWins(electionResults):
         for key, _ in electionWins.items():
             if key == i:
                 electionWins[key]+=1
+    initDictionary(electionReturns,candidate_names) # reinitialize the electionReturns dict back to zeros for the next election
+
 
 def runElections(howMany):
-    for _ in range(howMany):
+    for i in range(howMany):
+        print(i)
         addWins(oneElection())
-        initDictionary(electionReturns,candidate_names) # reinitialize the electionReturns dict back to zeros for the next election
 
 def percentDisplay(num):
     percentString = str(round(float(num/numOfSims)*100, 1)) + "%"
     return percentString
 
-def printWinnters(inputList):
-    for k, v in inputList:
-        print (k + ' - ' + str(v) + " - " + percentDisplay(v) + " chance of being elected.")
+# def printWinnters(inputList):
+#     for k, v in inputList:
+#         print (k + ' - ' + str(v) + " - " + percentDisplay(v) + " chance of being elected.")
 
 def outputAsJson(winnerList):
     candidates = {}
