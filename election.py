@@ -2,7 +2,6 @@ import random
 import time
 from jsonReader import *
 from datetime import datetime
-import concurrent.futures
 
 electionWins = {}
 electionReturns = {}
