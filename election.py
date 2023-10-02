@@ -17,7 +17,7 @@ def sortItems(itemInput):
 
 def decideVote(ballotDict,preferences):
     initDictionary(ballotDict,candidate_names)
-    for _ in range(3): # lower values increase speed and variation
+    for _ in range(2): # lower values increase speed and variation
         rand = random.SystemRandom().uniform(0,1)
         for k, _ in ballotDict.items():
             if rand < preferences.get(k):
@@ -60,7 +60,6 @@ def addWins(electionResults):
 
 def runElections(howMany):
     for i in range(howMany):
-        print(i)
         addWins(oneElection())
 
 def percentDisplay(num):
