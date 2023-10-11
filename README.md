@@ -1,5 +1,5 @@
 # Upper Arlington School Board Election Simulator
-Upper Arlington city elections for City Council and School Board typically have a list of candidates competing for multiple open seats. In a state or federal elections operating where voters only vote for one candidate to fill a single open seat, predicting elections take the form of polling and examining fundamentals. Predicting local elections where voters can select two candidates out of many competing for multiple open seats is more challenging.  
+Upper Arlington city elections for City Council and School Board typically have a list of candidates competing for multiple open seats. In a state or federal elections operating where voters only vote for one candidate to fill a single open seat, predicting elections take the form of polling and examining fundamentals. Predicting local elections where voters can select multiple candidates with multiple winners is more challenging.  
 
 ## How to install (beginners using Mac or Windows)
 1. Install `python3` from the official Python [website](https://www.python.org/downloads/).
@@ -25,9 +25,9 @@ Upper Arlington city elections for City Council and School Board typically have 
 | - |:--|
 | `candidates`    | The full name of all the candidates on the ballot are listed as a string array.     |
 | `voterProfiles`    | The default file contains three profiles: `DEM`, `IND`, and `GOP`. You may add more profiles like `CENTER-DEM`, `CENTER-GOP`, etc for more fine tuned control.<br />The decimal number following each candidate must be between `0` and `1`, although a value inclusive of the range `0.05` and `0.95` is recommended to generate entropy in the simulation.<br/>The decimal number indicates the probability of individual voter selecting this candidate on their ballot. **See below for a more detailed discussion of `voterProfiles`.**|
-| `electorate`:      | Each `voterProfile` has a corresponding number indicating its percentage of the whole electorate. For example, `"GOP":0.39` means that 39% of the electorate has the `GOP` voter profile. All the `electorate` values must add up to `1.0`.     |
-|`electionSettings`:|`numOfSims`: The number of times the script will run a single election. Higher numbers will increase processing times.</br> `totalVoters`: The number of voters for each election sim. Higher numbers will increase processing times and also reduce entropy in the final results.</br> `ballotWinners:` By default, the Upper Arlington School Board election will have `2` winners since there are two open seats. You may customize this value for other elections with more than 2 winners. Set the value to `1` to emulate a traditional single-winner election. |
-|`message:`|Unused config parameter that may be used in future versions to add messages contextualizing the election or justifying the `voterProfiles`.
+| `electorate`      | Each `voterProfile` has a corresponding number indicating its percentage of the whole electorate. For example, `"GOP":0.39` means that 39% of the electorate has the `GOP` voter profile. All the `electorate` values must add up to `1.0`.     |
+|`electionSettings`|`numOfSims`: The number of times the script will run a single election. Higher numbers will increase processing times.</br> `totalVoters`: The number of voters for each election sim. Higher numbers will increase processing times and also reduce entropy in the final results.</br> `ballotWinners:` By default, the Upper Arlington School Board election will have `2` winners since there are two open seats. You may customize this value for other elections with more than 2 winners. Set the value to `1` to emulate a traditional single-winner election. |
+|`message`|Unused config parameter that may be used in future versions to add messages contextualizing the election or justifying the `voterProfiles`.
 
 
 ### `voterProfiles` in depth:
@@ -38,7 +38,7 @@ The aim of this program is to allow you to create custom voter profiles which re
 *  `"IND":{"Jenny McKenna":0.90` This says that given a single instance of a voter with the `IND` profile, there is a 90% probability that they will add Jenny McKenna to their ballot.
 
 #### If a voter can only choose 2 candidates, but has a 90%+ probability of choosing 3, what happens?
-The program has a simple tie-breaking feature to ensure every voter only selects 2 candidates. If a voter ends up selecting 3 candidates, two winners will be chosen from random. Over hundreds of voters and hundreds of election sims, this introduces a small amount of entropy into the results.
+The program has a simple tie-breaking feature to ensure every voter only selects the number of candidates declared in the `ballotWinners` variable. Assuming you set that value to `2`, if a voter ends up selecting 3 candidates, two winners will be chosen from random. Over hundreds of voters and hundreds of election sims, this introduces a small amount of entropy into the results.
 
 #### Where do voter profile numbers come from?
 In a typical local election, there are no polls to draw from to guess electoral outcomes. That means that you have to use your own knowledge and intuition to assign these numbers. Given that school board elections have become polarized, you can make an educated guess on how likely a `DEM` or `GOP` voter would select a specific candidate.
