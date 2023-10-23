@@ -3,7 +3,6 @@ import time
 from datetime import datetime
 import json
 
-
 class ElectionSimulator:
 
     def __init__(self, config_file):
@@ -25,8 +24,8 @@ class ElectionSimulator:
                 self.electionReturns = {}
                 self.electionWins = {}
                 self.ballotChoice = {}
-                self.initDictionary(self.electionReturns, self.candidateNames)
-                self.initDictionary(self.electionWins, self.candidateNames)
+                self.electionReturns = {name: 0 for name in self.candidateNames}
+                self.electionWins = {name: 0 for name in self.candidateNames}
 
         except json.JSONDecodeError:
             print("Failed to load election data")
@@ -35,16 +34,10 @@ class ElectionSimulator:
         except Exception as e:
             print(f"An error occurred: {str(e)}")
 
-
-    def initDictionary(self, inputDict, names): #initialize dictionary
-        inputDict.clear()
-        inputDict.update({name: 0 for name in names})
-
     def sortItems(self, itemInput):
         outputList = sorted(itemInput.items(), key=lambda x: (x[1], random.random()), reverse=True) # tie-breaker
         return outputList
 
-    
     def decideVote(self, preferences):
         ballot_dict = {name: 0 for name in self.candidateNames}
         rand = random.SystemRandom().uniform(0, 1)
@@ -105,8 +98,7 @@ class ElectionSimulator:
                 "probabilityToWin": self.percentDisplay(numOfWins)
         }
         now = datetime.now()
-        stringDate = now.strftime("%d/%m/%Y %H:%M:%S")  
-
+        stringDate = now.strftime("%d/%m/%Y %H:%M:%S")
         combinedJson = {
             "timestamp": stringDate,
             "electionSettings": self.settingsData,
@@ -119,41 +111,29 @@ class ElectionSimulator:
     def printTime(self, time):
         print("Running time %02d:%02d:%02d.%03d" % (time // 3600, (time % 3600 // 60), (time % 60 // 1), (time % 1 * 1000)))
         
-    def checkElectionJson(self, jsonData):    
-
+    def checkElectionJson(self, jsonData):    # Pydantic will make most of this unnecesary
         candidates = jsonData.get("candidates", [])  # Extract candidates, voter profiles, and electorate data
         voterProfiles = jsonData.get("voterProfiles", {})
         electorate = jsonData.get("electorate", {})
-        
         for party, profiles in voterProfiles.items(): # Check if candidates match the voter profiles
             if not sameList(candidates, profiles.keys()):
                 print("The candidates list does not match the candidates in the voter profiles.")
                 return False
-        
         if not sameList(list(electorate.keys()), list(voterProfiles.keys())): # Check if parties in electorate match the voter profiles
             print("The parties listed in the electorate key do not match the parties in the voter profiles.")
             return False
-        
         return True
 
 def sameList(list1, list2): #returns true if two lists are identical
         return set(list1) == set(list2)
 
-
 if __name__ == "__main__":
     
     startTime = time.time()
     
-    election_simulator = ElectionSimulator("config.json")
-    election_simulator.initDictionary(election_simulator.electionReturns,election_simulator.candidateNames) #initialize the electionReturns dictionary
-    election_simulator.initDictionary(election_simulator.electionWins,election_simulator.candidateNames) #initialize the electionReturns dictionary
-    
-    
+    election_simulator = ElectionSimulator("config.json")    
     election_simulator.runElections()
-    
-    
     winsSorted = election_simulator.sortItems(election_simulator.electionWins) # Count the number of wins.
-
     election_simulator.outputAsJson(winsSorted)
     stopWatch = time.time() - startTime
     election_simulator.printTime(stopWatch)
