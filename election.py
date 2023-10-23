@@ -34,46 +34,43 @@ class ElectionSimulator:
             print("The config.json file does not exist.")
         except Exception as e:
             print(f"An error occurred: {str(e)}")
-        finally:
-            jsonFile.close()
 
 
     def initDictionary(self, inputDict, names): #initialize dictionary
-        for element, index in enumerate(names): 
-            inputDict[index] = 0
+        inputDict.clear()
+        inputDict.update({name: 0 for name in names})
 
     def sortItems(self, itemInput):
         outputList = sorted(itemInput.items(), key=lambda x: (x[1], random.random()), reverse=True) # tie-breaker
         return outputList
 
-    def decideVote(self, ballotDict,preferences):
-        self.initDictionary(ballotDict,self.candidateNames)
-        for _ in range(2): # lower values increase speed and variation
-            rand = random.SystemRandom().uniform(0,1)
-            for k, _ in ballotDict.items():
-                if rand < preferences.get(k):
-                    ballotDict[k]+=1
-
+    
+    def decideVote(self, preferences):
+        ballot_dict = {name: 0 for name in self.candidateNames}
+        rand = random.SystemRandom().uniform(0, 1)
+        for _ in range(1): # lower values increase speed and variation
+            for candidate, _ in ballot_dict.items():
+                if rand < preferences.get(candidate):
+                    ballot_dict[candidate] += 1
+        return ballot_dict
+    
+    
     def vote(self, profile):
-        voterPref = self.voterProfiles[profile]
-        self.decideVote(self.ballotChoice,voterPref)
-        prefSorted = self.sortItems(self.ballotChoice)
-        voteCastDict = dict(prefSorted[0:self.numOfBallotWinners])
-        voteCast = list(voteCastDict.keys())
-        return voteCast
+        ballot_dict = self.decideVote(self.voterProfiles[profile])
+        pref_sorted = self.sortItems(ballot_dict)
+        vote_cast = [k for k, v in pref_sorted if v > 0][:self.numOfBallotWinners] #bulletvoting now supported
+        return vote_cast
 
     def addReturns(self, ballot):
         for i in ballot:
-            for key, _ in self.electionReturns.items():
-                if key == i:
-                    self.electionReturns[key]+=1
+            self.electionReturns[i]+=1
 
     def peopleDecide(self, electorateData):
-        for party in electorateData:
-                for _ in range(int(self.totalVoters*float(electorateData[party]))):
-                    self.addReturns(self.vote(party))
+        for party, party_proportion in electorateData.items():
+            num_votes = int(self.totalVoters * float(party_proportion))
+            for _ in range(num_votes):
+                self.addReturns(self.vote(party))
         #print("electionReturns are " + str(electionReturns))
-
 
     def oneElection(self):    
         self.peopleDecide(self.electorateData)
@@ -86,11 +83,10 @@ class ElectionSimulator:
             for key, _ in self.electionWins.items():
                 if key == i:
                     self.electionWins[key]+=1
-        self.initDictionary(self.electionReturns,self.candidateNames) # reinitialize the electionReturns dict back to zeros for the next election
+        self.electionReturns = {name: 0 for name in self.candidateNames} # reinitialize the electionReturns dict back to zeros for the next election
 
-
-    def runElections(self, howMany):
-        for i in range(howMany):
+    def runElections(self):
+        for i in range(self.numOfSims):
             self.addWins(self.oneElection())
 
     def percentDisplay(self, num):
@@ -141,9 +137,7 @@ class ElectionSimulator:
         return True
 
 def sameList(list1, list2): #returns true if two lists are identical
-        set1 = set(list1)
-        set2 = set(list2)
-        return set1 == set2
+        return set(list1) == set(list2)
 
 
 if __name__ == "__main__":
@@ -155,7 +149,7 @@ if __name__ == "__main__":
     election_simulator.initDictionary(election_simulator.electionWins,election_simulator.candidateNames) #initialize the electionReturns dictionary
     
     
-    election_simulator.runElections(election_simulator.numOfSims)
+    election_simulator.runElections()
     
     
     winsSorted = election_simulator.sortItems(election_simulator.electionWins) # Count the number of wins.
