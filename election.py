@@ -3,6 +3,10 @@ import time
 from datetime import datetime
 import json
 
+def sortItems(itemInput):
+    outputList = sorted(itemInput.items(), key=lambda x: (x[1], random.random()), reverse=True) # tie-breaker
+    return outputList
+
 class ElectionSimulator:
 
     def __init__(self, config_file):
@@ -33,43 +37,6 @@ class ElectionSimulator:
             print("The config.json file does not exist.")
         except Exception as e:
             print(f"An error occurred: {str(e)}")
-
-    def sortItems(self, itemInput):
-        outputList = sorted(itemInput.items(), key=lambda x: (x[1], random.random()), reverse=True) # tie-breaker
-        return outputList
-
-    def decideVote(self, preferences):
-        ballot_dict = {name: 0 for name in self.candidateNames}
-        rand = random.SystemRandom().uniform(0, 1)
-        for _ in range(1): # lower values increase speed and variation
-            for candidate, _ in ballot_dict.items():
-                if rand < preferences.get(candidate):
-                    ballot_dict[candidate] += 1
-        return ballot_dict
-    
-    
-    def vote(self, profile):
-        ballot_dict = self.decideVote(self.voterProfiles[profile])
-        pref_sorted = self.sortItems(ballot_dict)
-        vote_cast = [k for k, v in pref_sorted if v > 0][:self.numOfBallotWinners] #bulletvoting now supported
-        return vote_cast
-
-    def addReturns(self, ballot):
-        for i in ballot:
-            self.electionReturns[i]+=1
-
-    def peopleDecide(self, electorateData):
-        for party, party_proportion in electorateData.items():
-            num_votes = int(self.totalVoters * float(party_proportion))
-            for _ in range(num_votes):
-                self.addReturns(self.vote(party))
-        #print("electionReturns are " + str(electionReturns))
-
-    def oneElection(self):    
-        self.peopleDecide(self.electorateData)
-        returnsSorted = dict(self.sortItems(self.electionReturns)[0:self.numOfBallotWinners])
-        winners = list(returnsSorted.keys())
-        return winners
         
     def addWins(self, electionResults):
         for i in electionResults:
@@ -80,7 +47,16 @@ class ElectionSimulator:
 
     def runElections(self):
         for i in range(self.numOfSims):
-            self.addWins(self.oneElection())
+            election = Election(
+            self.candidateNames, 
+            self.totalVoters, 
+            self.numOfBallotWinners, 
+            self.voterProfiles, 
+            self.electorateData
+        )
+            self.addWins(election.oneElection())
+        winsSorted = sortItems(self.electionWins)
+        return winsSorted
 
     def percentDisplay(self, num):
         percentString = str(round(float(num/self.numOfSims)*100, 1)) + "%"
@@ -124,18 +100,59 @@ class ElectionSimulator:
             return False
         return True
 
+
+class Election:
+    def __init__(self, candidateNames, totalVoters, numOfBallotWinners, voterProfiles, electorateData):
+        self.candidateNames = candidateNames
+        self.totalVoters = totalVoters
+        self.numOfBallotWinners = numOfBallotWinners
+        self.voterProfiles = voterProfiles
+        self.electorateData = electorateData
+        self.electionReturns = {name: 0 for name in self.candidateNames}
+        self.electionWins = {name: 0 for name in self.candidateNames}
+        
+    def decideVote(self, preferences):
+        ballot_dict = {name: 0 for name in self.candidateNames}
+        rand = random.SystemRandom().uniform(0, 1)  # rand = random.uniform(0, 1)    # rand = random.SystemRandom().uniform(0, 1)
+        for _ in range(1): # lower values increase speed and variation
+            for candidate, _ in ballot_dict.items():
+                if rand < preferences.get(candidate):
+                    ballot_dict[candidate] += 1
+        return ballot_dict
+    
+    def vote(self, profile):
+        ballot_dict = self.decideVote(self.voterProfiles[profile])
+        pref_sorted = sortItems(ballot_dict)
+        vote_cast = [k for k, v in pref_sorted if v > 0][:self.numOfBallotWinners] #bulletvoting now supported
+        return vote_cast
+
+    def addReturns(self, ballot):
+        for i in ballot:
+            self.electionReturns[i]+=1
+
+    def peopleDecide(self, electorateData):
+        for party, party_proportion in electorateData.items():
+            num_votes = int(self.totalVoters * float(party_proportion))
+            for _ in range(num_votes):
+                self.addReturns(self.vote(party))
+        #print("electionReturns are " + str(electionReturns))
+
+    def oneElection(self):    
+        self.peopleDecide(self.electorateData)
+        returnsSorted = dict(sortItems(self.electionReturns)[0:self.numOfBallotWinners])
+        winners = list(returnsSorted.keys())
+        return winners
+
 def sameList(list1, list2): #returns true if two lists are identical
         return set(list1) == set(list2)
 
-if __name__ == "__main__":
-    
+def run():
     startTime = time.time()
-    
     election_simulator = ElectionSimulator("config.json")    
-    election_simulator.runElections()
-    winsSorted = election_simulator.sortItems(election_simulator.electionWins) # Count the number of wins.
+    winsSorted = election_simulator.runElections()
     election_simulator.outputAsJson(winsSorted)
     stopWatch = time.time() - startTime
     election_simulator.printTime(stopWatch)
-
-
+    
+if __name__ == "__main__":
+    run()
