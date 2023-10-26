@@ -3,9 +3,14 @@ import time
 from datetime import datetime
 import json
 
+
+#Utility functions
 def sortItems(itemInput):
     outputList = sorted(itemInput.items(), key=lambda x: (x[1], random.random()), reverse=True) # tie-breaker
     return outputList
+
+def sameList(list1, list2): #returns true if two lists are identical
+        return set(list1) == set(list2)
 
 class ElectionSimulator:
 
@@ -142,17 +147,3 @@ class Election:
         returnsSorted = dict(sortItems(self.electionReturns)[0:self.numOfBallotWinners])
         winners = list(returnsSorted.keys())
         return winners
-
-def sameList(list1, list2): #returns true if two lists are identical
-        return set(list1) == set(list2)
-
-def run():
-    startTime = time.time()
-    election_simulator = ElectionSimulator("config.json")    
-    winsSorted = election_simulator.runElections()
-    election_simulator.outputAsJson(winsSorted)
-    stopWatch = time.time() - startTime
-    election_simulator.printTime(stopWatch)
-    
-if __name__ == "__main__":
-    run()
