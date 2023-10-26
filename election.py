@@ -67,9 +67,10 @@ class ElectionSimulator:
         percentString = str(round(float(num/self.numOfSims)*100, 1)) + "%"
         return percentString
 
-    # def printWinnters(inputList):
-    #     for k, v in inputList:
-    #         print (k + ' - ' + str(v) + " - " + percentDisplay(v) + " chance of being elected.")
+    def printWinnters(self, inputList):
+        for k, v in inputList:
+            print(f"{k:<15} - {v:>3} - {self.percentDisplay(v):>8} chance of being elected.")
+
 
     def outputAsJson(self, winnerList):
         candidates = {}
