@@ -8,14 +8,14 @@ Upper Arlington city elections for City Council and School Board typically have 
 1. [Mac only] Open the Terminal app on Mac.
 1. [Windows only] Open the Windows Powershell on Windows.
 1. Type the command `cd` and then drag the `electionsim-main` folder onto the window, then hit Return.
-1. Type `python3 election.py` and it should run. If it gives an error about python3 not being installed, or if it says `No such file or directory` then type the command `pwd` and hit Enter to make sure your Terminal or Powershell is looking in the right directory where the `electionsim-main` folder is.
+1. Type `python3 election_cli.py` and it should run. If it gives an error about python3 not being installed, or if it says `No such file or directory` then type the command `pwd` and hit Enter to make sure your Terminal or Powershell is looking in the right directory where the `electionsim-main` folder is.
 1. To customize the electorate data, candidates and voter profiles, see below on working with the `config.json` file.
 
 
 ## Installation (advanced)
 1. Install `python3`
 1. Open `config.json` to edit the candidate and electorate profiles.
-1. Run `election.py` to view the results in JSON format.
+1. Run `election_cli.py` to view the results in JSON format.
 
 
 ## How to use `config.json` to customize your election simulations
