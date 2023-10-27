@@ -12,36 +12,47 @@ def sortItems(itemInput):
 def sameList(list1, list2): #returns true if two lists are identical
         return set(list1) == set(list2)
 
-class ElectionSimulator:
-
-    def __init__(self, config_file):
+class Config:
+    def __init__(self,config_file):
         self.config_file = config_file
         self.loadConfig()
 
     def loadConfig(self):
-        try:
-            with open(self.config_file, 'r') as jsonFile:
-                jsonObject = json.load(jsonFile)
-                self.candidateNames = jsonObject["candidates"]
-                self.numOfBallotWinners = jsonObject["electionSettings"]["ballotWinners"]
-                self.numOfSims = jsonObject["electionSettings"]["numOfSims"]
-                self.totalVoters = jsonObject["electionSettings"]["totalVoters"]
-                self.voterProfiles = jsonObject["voterProfiles"]
-                self.message = jsonObject["message"]
-                self.electorateData = jsonObject["electorate"]
-                self.settingsData = jsonObject["electionSettings"]
-                self.electionReturns = {}
-                self.electionWins = {}
-                self.ballotChoice = {}
-                self.electionReturns = {name: 0 for name in self.candidateNames}
-                self.electionWins = {name: 0 for name in self.candidateNames}
+            try:
+                with open(self.config_file, 'r', encoding="utf-8") as jsonFile:
+                    jsonObject = json.load(jsonFile)
+                    self.candidateNames = jsonObject["candidates"]
+                    self.numOfBallotWinners = jsonObject["electionSettings"]["ballotWinners"]
+                    self.numOfSims = jsonObject["electionSettings"]["numOfSims"]
+                    self.totalVoters = jsonObject["electionSettings"]["totalVoters"]
+                    self.voterProfiles = jsonObject["voterProfiles"]
+                    self.message = jsonObject["message"]
+                    self.electorateData = jsonObject["electorate"]
+                    self.settingsData = jsonObject["electionSettings"]
+            except json.JSONDecodeError:
+                print("Failed to load config data")
+            except FileNotFoundError:
+                print("The config.json file does not exist.")
+            except Exception as e:
+                print(f"An error occurred: {str(e)}")
+                
+class ElectionSimulator:
 
-        except json.JSONDecodeError:
-            print("Failed to load election data")
-        except FileNotFoundError:
-            print("The config.json file does not exist.")
-        except Exception as e:
-            print(f"An error occurred: {str(e)}")
+    def __init__(self, config: Config):
+        self.config = config
+        self.candidateNames = config.candidateNames
+        self.numOfBallotWinners = config.settingsData["ballotWinners"]
+        self.numOfSims = config.settingsData["numOfSims"]
+        self.totalVoters = config.settingsData["totalVoters"]
+        self.voterProfiles = config.voterProfiles
+        self.electorateData = config.electorateData
+        self.settingsData = config.settingsData
+        #self.message = config.message  #unimplemented
+        self.electionReturns = {}
+        self.electionWins = {}
+        self.ballotChoice = {}
+        self.electionReturns = {name: 0 for name in self.candidateNames}
+        self.electionWins = {name: 0 for name in self.candidateNames}
         
     def addWins(self, electionResults):
         for i in electionResults:
