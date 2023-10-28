@@ -1,15 +1,15 @@
 from election import ElectionSimulator
-from election import Config
+from election import ConfigFile
 import time
 
 def run():
-    startTime = time.time()
-    config = Config("config.json")
+    start_time = time.time()
+    config = ConfigFile("config.json")
     election_simulator = ElectionSimulator(config)
-    winsSorted = election_simulator.runElections()
-    election_simulator.printWinnters(winsSorted)
-    stopWatch = time.time() - startTime
-    election_simulator.printTime(stopWatch)
+    wins_sorted = election_simulator.runElections()
+    election_simulator.print_winners(wins_sorted)
+    stop_watch = time.time() - start_time
+    election_simulator.print_time(stop_watch)
 
 if __name__ == "__main__":
     run()
