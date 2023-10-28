@@ -21,10 +21,10 @@ class CandidateWin(BaseModel):
 
 class ElectionResponse(BaseModel):
     datetime: str
-    candidates: Dict[str, CandidateWin]  # Can accommodate any candidate name
-    voterProfiles: Dict[str, Dict[str, float]]  # Similar to your request model
-    electorate: Dict[str, float]  # Can accommodate any party
-    electionSettings: ElectionSettings  # Reusing the model from your request
+    candidates: Dict[str, CandidateWin]
+    voterProfiles: Dict[str, Dict[str, float]]
+    electorate: Dict[str, float]
+    electionSettings: ElectionSettings
 
 class ConfigFile:
     def __init__(self, config_file=None, json_object=None):
@@ -38,7 +38,7 @@ class ConfigFile:
         try:
             with open(config_file, 'r', encoding="utf-8") as jsonFile:
                 json_object = json.load(jsonFile)
-                self.config_data = Config(**json_object)  # Using Pydantic model for validation
+                self.config_data = Config(**json_object)
         except json.JSONDecodeError:
             print("Failed to load config data")
         except FileNotFoundError:
@@ -50,6 +50,6 @@ class ConfigFile:
 
     def load_config_from_json(self, json_object):
         try:
-            self.config_data = Config(**json_object)  # Using Pydantic model for validation
+            self.config_data = Config(**json_object)
         except Exception as e:
             print(f"An unexpected error occurred: {str(e)}")
