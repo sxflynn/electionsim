@@ -1,6 +1,6 @@
 import time
 from election import ElectionSimulator
-from election_config import ConfigFile, ElectionResponse, CandidateWin, ElectionSettings
+from election_config import Config, ConfigFile, ElectionResponse, CandidateWin, ElectionSettings
 
 #CLI utility functions
 def percent_display(config, num):
@@ -23,37 +23,9 @@ def print_time(systime):
 def run():
     start_time = time.time()
     config = ConfigFile("config.json")
-    election_simulator = ElectionSimulator(config)
+    election_simulator = ElectionSimulator(config.config_data)
     wins_sorted = election_simulator.run_elections()
-    
-    candidates_dict = {}    
-    for candidate, wins in wins_sorted:
-        probability_to_win = (wins / config.config_data.electionSettings.numOfSims) * 100
-        candidates_dict[candidate] = {
-            "numberOfWins": wins,
-            "probabilityToWin": f"{probability_to_win:.1f}%"
-        }
-
-    datetime_str = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-    election_settings = ElectionSettings(
-        numOfSims=config.config_data.electionSettings.numOfSims,
-        totalVoters=config.config_data.electionSettings.totalVoters,
-        ballotWinners=config.config_data.electionSettings.ballotWinners
-    )
-    response_data = {
-        "datetime": datetime_str,
-        "candidates": candidates_dict,
-        "voterProfiles": config.config_data.voterProfiles,
-        "electorate": config.config_data.electorate,
-        "electionSettings": election_settings
-    }
-    election_response = ElectionResponse(**response_data)
-
-    response_json_str = election_response.model_dump_json()
-    
     print_winners(config, wins_sorted)
-    #print(response_json_str)
-    
     stop_watch = time.time() - start_time
     print_time(stop_watch)
 
