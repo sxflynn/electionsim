@@ -1,8 +1,7 @@
 import random
 import json
-from typing import Dict, List
-from pydantic import BaseModel
 from election_config import ConfigFile
+from typing import List, Tuple
 
 #Utility functions
 def sortItems(item_input):
@@ -24,20 +23,20 @@ class ElectionSimulator:
                 if key == i:
                     self.election_wins[key]+=1
 
-    def runElections(self):
+    def run_elections(self) -> List[Tuple[str, int]]:
+        """Class method will return a list of tuples like 
+        [('Alice', 73), ('Bob', 70), ('Charlie', 35)]
+        The string  represents the name of a candidate
+        and the integer represents the number of wins that candidate has.
+
+        :return: A list of tuples containing candidate names and win counts.
+        :rtype: List[Tuple[str, int]]
+        """
         for i in range(self.config.config_data.electionSettings.numOfSims):
             election = Election(self.config)
             self.add_wins(election.one_election())
         wins_sorted = sortItems(self.election_wins)
         return wins_sorted
-
-    def percent_display(self, num):
-        percent_string = str(round(float(num/self.config.config_data.electionSettings.numOfSims)*100, 1)) + "%"
-        return percent_string
-
-    def print_winners(self, input_list):
-        for k, v in input_list:
-            print(f"{k:<15} - {v:>3} - {self.percent_display(v):>8} chance of being elected.")
 
     def print_time(self, systime):
         hours = int(systime // 3600)

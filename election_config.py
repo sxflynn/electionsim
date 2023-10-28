@@ -15,6 +15,17 @@ class Config(BaseModel):
     electionSettings: ElectionSettings
     message: str
 
+class CandidateWin(BaseModel):
+    numberOfWins: int
+    probabilityToWin: str
+
+class ElectionResponse(BaseModel):
+    datetime: str
+    candidates: Dict[str, CandidateWin]  # Can accommodate any candidate name
+    voterProfiles: Dict[str, Dict[str, float]]  # Similar to your request model
+    electorate: Dict[str, float]  # Can accommodate any party
+    electionSettings: ElectionSettings  # Reusing the model from your request
+
 class ConfigFile:
     def __init__(self, config_file=None, json_object=None):
         self.config_data = None
