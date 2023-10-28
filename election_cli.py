@@ -1,6 +1,7 @@
+import time
 from election import ElectionSimulator
 from election import ConfigFile
-import time
+
 
 def run():
     start_time = time.time()
