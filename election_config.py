@@ -18,10 +18,21 @@ class Config(BaseModel):
 class CandidateWin(BaseModel):
     numberOfWins: int
     probabilityToWin: str
+    
+class ElectionResult(BaseModel):
+    candidate: str
+    votes: int
 
 class ElectionResponse(BaseModel):
     datetime: str
     candidates: Dict[str, CandidateWin]
+    voterProfiles: Dict[str, Dict[str, float]]
+    electorate: Dict[str, float]
+    electionSettings: ElectionSettings
+    
+class SingleElectionResponse(BaseModel):
+    datetime: str
+    results: Dict[str, int]
     voterProfiles: Dict[str, Dict[str, float]]
     electorate: Dict[str, float]
     electionSettings: ElectionSettings

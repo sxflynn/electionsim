@@ -1,7 +1,8 @@
 import random
 import json
-from election_config import ConfigFile
 from typing import List, Tuple
+from election_config import ConfigFile
+
 
 #Utility functions
 def sortItems(item_input):
@@ -27,14 +28,15 @@ class ElectionSimulator:
         """Class method will return a list of tuples like 
         [('Alice', 73), ('Bob', 70), ('Charlie', 35)]
         The string  represents the name of a candidate
-        and the integer represents the number of wins that candidate has.
+        and the integer represents the number of wins that 
+        candidate has over numOfSims simulations.
 
         :return: A list of tuples containing candidate names and win counts.
         :rtype: List[Tuple[str, int]]
         """
         for i in range(self.config.electionSettings.numOfSims):
             election = Election(self.config)
-            self.add_wins(election.one_election())
+            self.add_wins(election.one_election()) #False means do not run as single election
         wins_sorted = sortItems(self.election_wins)
         return wins_sorted
 

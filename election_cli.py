@@ -1,6 +1,7 @@
 import time
-from election import ElectionSimulator
-from election_config import Config, ConfigFile, ElectionResponse, CandidateWin, ElectionSettings
+import sys
+from election import ElectionSimulator, Election
+from election_config import ConfigFile
 
 #CLI utility functions
 def percent_display(config, num):
@@ -19,8 +20,19 @@ def print_time(systime):
     formatted_time = f"Running time {hours:02d}:{minutes:02d}:{seconds:02d}.{milliseconds:03d}"
     print(formatted_time)
 
+#single election run method
+def run_one():
+    start_time = time.time()
+    config = ConfigFile("config.json")
+    election = Election(config.config_data)
+    election.one_election()
+    results = election.election_returns
+    print(str(results))
+    stop_watch = time.time() - start_time
+    print_time(stop_watch)
 
-def run():
+#election simulation run method
+def run_multiple():
     start_time = time.time()
     config = ConfigFile("config.json")
     election_simulator = ElectionSimulator(config.config_data)
@@ -30,4 +42,8 @@ def run():
     print_time(stop_watch)
 
 if __name__ == "__main__":
-    run()
+    if len(sys.argv) > 1:
+        print("Single argument provided. One election.")
+        run_one()
+    else:
+        run_multiple()
