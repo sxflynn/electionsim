@@ -1,0 +1,40 @@
+{
+    "datetime":"",
+    "candidates": {
+        "Nidhi": {
+            "numberOfWins": 9,
+            "probabilityToWin": "90.0%"
+        },
+        "Lou": {
+            "numberOfWins": 7,
+            "probabilityToWin": "70.0%"
+        },
+        "Liz": {
+            "numberOfWins": 3,
+            "probabilityToWin": "30.0%"
+        },
+        "Scott": {
+            "numberOfWins": 1,
+            "probabilityToWin": "10.0%"
+        },
+        "Carol": {
+            "numberOfWins": 0,
+            "probabilityToWin": "0.0%"
+        }
+    },
+    "voterProfiles":{
+        "DEM":{"Liz": 0.02, "Lou": 0.05, "Nidhi":0.95, "Scott":0.60, "Carol":0.85},
+        "IND":{"Liz": 0.30, "Lou": 0.45, "Nidhi":0.35, "Scott":0.70, "Carol":0.55},
+        "GOP":{"Liz": 0.90, "Lou": 0.98, "Nidhi":0.02, "Scott":0.20, "Carol":0.05}
+    },
+    "electorate":{
+        "GOP":0.39,
+        "IND":0.15,
+        "DEM":0.46
+    },
+    "electionSettings":{
+        "numOfSims": 10,
+        "totalVoters":1000,
+        "ballotWinners":2
+    }
+}
