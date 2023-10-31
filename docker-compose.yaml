@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  fastapi-backend:
+    build:
+      context: ./backend/
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/:/app
+    networks:
+      - electionsim-network
+
+  react-frontend:
+    build:
+      context: ./frontend/
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/:/srv/app
+      - node_modules:/srv/app/node_modules
+    networks:
+      - electionsim-network
+
+volumes:
+  node_modules:
+
+networks:
+  electionsim-network:
+    driver: bridge

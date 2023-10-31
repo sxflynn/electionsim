@@ -1,0 +1,19 @@
+# Version control directories
+.git
+
+# Virtual environment
+venv
+# Cache and temporary files
+__pycache__
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+
+# IDE configuration files
+.idea/
+.vscode/
+
+# Logs and databases
+*.db
+*.log
