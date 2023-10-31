@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import configData from './config.json';
 import './App.css';
+import TextArea from './TextArea';
 
 function App() {
     // Initial state
@@ -10,8 +11,10 @@ function App() {
 
     const handleSubmit = async (event) => {
       event.preventDefault();
+    //   const apiUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'; this breaks the fetch
   
       try {
+        // const response = await fetch(`${apiUrl}/election`, { for setting environment variable
           const response = await fetch('http://127.0.0.1:8000/election', {
               method: 'POST',
               headers: {
@@ -22,9 +25,19 @@ function App() {
   
           const responseData = await response.json();
           setResponse(responseData);
+          console.log('Successful fetch'); 
       } catch (error) {
           console.error('Error making POST request:', error);
       }
+  };
+
+  const candidatesValue = data.candidates.join('\n');
+  const handleCandidatesChange = (e) => {
+    // Updating the candidates in state based on the TextArea value
+    setData({
+      ...data,
+      candidates: e.target.value.split('\n'),
+    });
   };
 
     return (
@@ -33,14 +46,8 @@ function App() {
 
             <form onSubmit={handleSubmit}>
                 <h2>Candidates</h2>
-                <textarea rows = "7"
-                    value={data.candidates.join('\n')}
-                    onChange={(e) => setData({
-                        ...data,
-                        candidates: e.target.value.split('\n')
-                    })}
-                    placeholder="Enter candidates, one per line"
-                />
+                {/* TextArea component */}
+                <TextArea value={candidatesValue} onChange={handleCandidatesChange} />
 
                 <h2>Voter Profiles</h2>
                 {Object.entries(data.voterProfiles).map(([party, profiles]) => (
