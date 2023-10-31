@@ -1,57 +1,11 @@
 import { useState } from 'react';
+import configData from './config.json';
 import './App.css';
 
 function App() {
     // Initial state
-    const [data, setData] = useState({
-      "candidates": [
-          "Jenny McKenna",
-          "Lori Trent",
-          "Glen Dugger",
-          "Ruth Edmonds",
-          "Sumia Mohamed",
-          "Liz Stump"
-      ],
-      "voterProfiles": {
-          "DEM": {
-              "Jenny McKenna": 0.60,
-              "Lori Trent": 0.20,
-              "Glen Dugger": 0.05,
-              "Ruth Edmonds": 0.05,
-              "Sumia Mohamed": 0.75,
-              "Liz Stump": 0.75
-          },
-          "IND": {
-              "Jenny McKenna": 0.75,
-              "Lori Trent": 0.75,
-              "Glen Dugger": 0.10,
-              "Ruth Edmonds": 0.05,
-              "Sumia Mohamed": 0.40,
-              "Liz Stump": 0.50
-          },
-          "GOP": {
-              "Jenny McKenna": 0.15,
-              "Lori Trent": 0.45,
-              "Glen Dugger": 0.95,
-              "Ruth Edmonds": 0.85,
-              "Sumia Mohamed": 0.05,
-              "Liz Stump": 0.05
-          }
-      },
-      "electorate": {
-          "GOP": 0.39,
-          "IND": 0.15,
-          "DEM": 0.46
-      },
-      "electionSettings": {
-          "numOfSims": 500,
-          "totalVoters": 500,
-          "ballotWinners": 3
-      },
-      "message": "Write your message here"
-  });
+    const [data, setData] = useState(configData);
   
-
     const [response, setResponse] = useState(null);
 
     const handleSubmit = async (event) => {
