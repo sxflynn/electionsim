@@ -2,6 +2,7 @@ import { useState } from 'react';
 import configData from './config.json';
 import './App.css';
 import TextArea from './TextArea';
+import NumberInput from './NumberInput';
 
 function App() {
     // Initial state
@@ -40,6 +41,18 @@ function App() {
     });
   };
 
+  const updateNestedObject = (path, value) => {
+    setData(prevData => {
+      // Create a deep clone of the previous state
+      const updatedData = JSON.parse(JSON.stringify(prevData));
+  
+      // Use reduce to navigate to the deepest object
+      path.slice(0, -1).reduce((obj, key) => obj[key], updatedData)[path.slice(-1)[0]] = value;
+  
+      return updatedData;
+    });
+  };
+  
     return (
         <>
             <h1>UA Election Predictor</h1>
@@ -49,30 +62,21 @@ function App() {
                 {/* TextArea component */}
                 <TextArea value={candidatesValue} onChange={handleCandidatesChange} />
 
+
                 <h2>Voter Profiles</h2>
                 {Object.entries(data.voterProfiles).map(([party, profiles]) => (
                     <div key={party}>
                         <h3>{party}</h3>
                         {data.candidates.map(candidate => (
                             <div key={candidate}>
-                                <label>
-                                    {candidate}:
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        max="1"
-                                        step="0.01"
-                                        value={profiles[candidate] || ''}
-                                        onChange={e => setData(prev => {
-                                            let updatedProfiles = {...prev.voterProfiles};
-                                            updatedProfiles[party][candidate] = parseFloat(e.target.value);
-                                            return {
-                                                ...prev,
-                                                voterProfiles: updatedProfiles
-                                            };
-                                        })}
+                                {/* NumberInput component */}  
+                                <NumberInput 
+                                    label={candidate} value={profiles[candidate] || ''} min="0" max="1" step="0.01"
+                                    onChange={e => updateNestedObject(
+                                        ['voterProfiles', party, candidate],
+                                         parseFloat(e.target.value))
+                                        }
                                     />
-                                </label>
                             </div>
                         ))}
                     </div>
