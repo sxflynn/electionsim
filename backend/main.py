@@ -11,7 +11,7 @@ app = FastAPI()
 
 # CORS middleware settings
 origins = [
-    "http://localhost:3000",  # Dev Frontend
+    "http://localhost:5173",  # Dev Frontend
     # "https://your-deployment-frontend-domain.com",  # Prod domain
 ]
 

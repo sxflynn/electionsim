@@ -11,8 +11,8 @@ RUN npm install --silent
 # Copy the rest of the code (assuming .dockerignore handles unwanted files)
 COPY . .
 
-# Expose the port (default for Vite is 3000)
-EXPOSE 3000
+# Expose the port (default for Vite is 5173)
+EXPOSE 5173
 
 # Command to run your application
 CMD ["npm", "run", "dev"]
