@@ -1,6 +1,6 @@
 import NumberInput from './NumberInput';
 
-function Electorate({ data, setData }) {
+function ElectorateInput({ data, setData }) {
     return (
         <div>
             <h2>Electorate</h2>
@@ -27,4 +27,4 @@ function Electorate({ data, setData }) {
     );
 }
 
-export default Electorate;
+export default ElectorateInput;

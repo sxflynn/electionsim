@@ -1,6 +1,6 @@
 import NumberInput from "./NumberInput";
 
-function VoterProfiles({voterProfilesData, candidates, updateNestedObject}){
+function VoterProfilesInput({voterProfilesData, candidates, updateNestedObject}){
 
     return (
 
@@ -30,4 +30,4 @@ function VoterProfiles({voterProfilesData, candidates, updateNestedObject}){
 }
 
 
-export default VoterProfiles;
+export default VoterProfilesInput;
