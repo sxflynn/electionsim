@@ -1,7 +1,18 @@
 # Upper Arlington School Board Election Simulator
 Upper Arlington city elections for City Council and School Board typically have a list of candidates competing for multiple open seats. In a state or federal elections operating where voters only vote for one candidate to fill a single open seat, predicting elections take the form of polling and examining fundamentals. Predicting local elections where voters can select multiple candidates with multiple winners is more challenging.  
 
-## How to run the command line tool (beginners using Mac or Windows)
+## Run command line tool
+1. With `python3` installed, run `pip install pydantic`
+1. Run `python3 election_cli.py` to run a simulation.
+1. To run a single election, add a single argument, like `python3 election_cli.py -s`
+
+## Run web client with Docker
+1. Install `docker` and `docker-compose` -> [Download Docker Desktop client](https://www.docker.com/get-started/)
+1. `cd` to the project directory
+1. Run `docker-composer up`
+1. Open `http://localhost:5173` in the web browser.
+
+## For beginners - How to run the command line tool, using Mac or Windows
 1. Install `python3` from the official Python [website](https://www.python.org/downloads/).
 1. [Download](https://github.com/sxflynn/electionsim/archive/refs/heads/main.zip) this repository to your computer as a zip file. Double click the zip file to unzip it as a folder called `electionsim-main`.
 1. [Windows only] Open the `electionsim-main.zip` file on your computer and make sure to click "Extract all..." so it gets extracted to a folder called `electionsim-main`.
@@ -11,18 +22,6 @@ Upper Arlington city elections for City Council and School Board typically have 
 1. Type `pip install pydantic`
 1. Type `python3 election_cli.py` and it should run. If it gives an error about python3 not being installed, or if it says `No such file or directory` then type the command `pwd` and hit Enter to make sure your Terminal or Powershell is looking in the right directory where the `electionsim-main` folder is. Feel free to post an issue above if you're having problems.
 1. To customize the electorate data, candidates and voter profiles, see below on working with the `config.json` file.
-
-
-## Run command line tool
-1. With `python3` installed, run `pip install pydantic`
-1. Run `python3 election_cli.py` to run a simulation.
-1. To run a single election, run `python3 election_cli.py -s`
-
-## Run web client with Docker
-1. Install `docker` and `docker-compose` -> [Download Docker Desktop client](https://www.docker.com/get-started/)
-1. `cd` to the project directory
-1. Run `docker-composer up`
-1. Open `http://localhost:5173` in the web browser.
 
 ## How to use `config.json` to customize your election simulations
 The command line `election_cli.py` app reads in a local file `config.json` as its input. 
