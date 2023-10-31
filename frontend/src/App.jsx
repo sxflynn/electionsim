@@ -3,6 +3,9 @@ import configData from './config.json';
 import './App.css';
 import TextArea from './TextArea';
 import NumberInput from './NumberInput';
+import ElectionSettings from './ElectionSettings';
+import Electorate from './Electorate';
+import VoterProfiles from './VoterProfiles';
 
 function App() {
     // Initial state
@@ -31,7 +34,7 @@ function App() {
           console.error('Error making POST request:', error);
       }
   };
-
+  const numCandidates = data.candidates.length;
   const candidatesValue = data.candidates.join('\n');
   const handleCandidatesChange = (e) => {
     // Updating the candidates in state based on the TextArea value
@@ -62,99 +65,22 @@ function App() {
                 {/* TextArea component */}
                 <TextArea value={candidatesValue} onChange={handleCandidatesChange} />
 
+                {/* VoterProfiles component */}
+                <VoterProfiles 
+                    voterProfilesData = {data.voterProfiles}
+                    candidates = {data.candidates}
+                    updateNestedObject={updateNestedObject}
+                    />
 
-                <h2>Voter Profiles</h2>
-                {Object.entries(data.voterProfiles).map(([party, profiles]) => (
-                    <div key={party}>
-                        <h3>{party}</h3>
-                        {data.candidates.map(candidate => (
-                            <div key={candidate}>
-                                {/* NumberInput component */}  
-                                <NumberInput 
-                                    label={candidate} value={profiles[candidate] || ''} min="0" max="1" step="0.01"
-                                    onChange={e => updateNestedObject(
-                                        ['voterProfiles', party, candidate],
-                                         parseFloat(e.target.value))
-                                        }
-                                    />
-                            </div>
-                        ))}
-                    </div>
-                ))}
+                {/* Electorate component */}
+                <Electorate data={data} setData={setData}/>;
 
-                <h2>Electorate</h2>
-                {Object.entries(data.electorate).map(([party, value]) => (
-                    <div key={party}>
-                        <label>
-                            {party}:
-                            <input
-                                type="number"
-                                min="0"
-                                max="1"
-                                step="0.01"
-                                value={value}
-                                onChange={e => setData(prev => {
-                                    let updatedElectorate = {...prev.electorate};
-                                    updatedElectorate[party] = parseFloat(e.target.value);
-                                    return {
-                                        ...prev,
-                                        electorate: updatedElectorate
-                                    };
-                                })}
-                            />
-                        </label>
-                    </div>
-                ))}
-
-                <h2>Election Settings</h2>
-                <div>
-                    <label>
-                        Number of Simulations:
-                        <input
-                            type="number"
-                            value={data.electionSettings.numOfSims}
-                            onChange={(e) => setData({
-                                ...data,
-                                electionSettings: {
-                                    ...data.electionSettings,
-                                    numOfSims: parseInt(e.target.value, 10)
-                                }
-                            })}
-                        />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Total Voters:
-                        <input
-                            type="number"
-                            value={data.electionSettings.totalVoters}
-                            onChange={(e) => setData({
-                                ...data,
-                                electionSettings: {
-                                    ...data.electionSettings,
-                                    totalVoters: parseInt(e.target.value, 10)
-                                }
-                            })}
-                        />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Ballot Winners:
-                        <input
-                            type="number"
-                            value={data.electionSettings.ballotWinners}
-                            onChange={(e) => setData({
-                                ...data,
-                                electionSettings: {
-                                    ...data.electionSettings,
-                                    ballotWinners: parseInt(e.target.value, 10)
-                                }
-                            })}
-                        />
-                    </label>
-                </div>
+                {/* ElectionSettings component */}
+                <ElectionSettings 
+                    data={data} 
+                    updateNestedObject={updateNestedObject}
+                    maxBallotWinners = {numCandidates - 1}
+                />
 
                 <button type="submit">Submit</button>
             </form>

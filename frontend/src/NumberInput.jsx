@@ -1,17 +1,17 @@
-function NumberInput({ label, value, onChange }) {
+function NumberInput({ label, value, min, max, step, onChange }) {
     return (
       <label>
-        {label}
+        {label}:
         <input
           type="number"
           value={value}
+          min={min}
+          max={max}
+          step={step}
           onChange={onChange}
-          min="0"
-          max="1"
-          step="0.01"
         />
       </label>
     );
   }
   
-  export default NumberInput;
+  export default NumberInput;  
