@@ -17,6 +17,8 @@ function App() {
 
     const [isSubmitted, setIsSubmitted] = useState(false);
 
+    const [predictionType, setPredictionType] = useState(''); // multi or single
+
     const loadFromLocalStorage = () => {
         try {
             const serializedData = localStorage.getItem('electionData');
@@ -51,10 +53,20 @@ function App() {
       setIsLoading(true);
       console.log('Load submit animation');
     //   const apiUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'; this breaks the fetch
+    
+    let endpoint;
+
+    if (predictionType === 'single') {
+        endpoint = '/one_election';
+        console.log('single election');
+    } else if (predictionType === 'multi') {
+        endpoint = '/election';
+        console.log('multi election');
+    }
   
       try {
         // const response = await fetch(`${apiUrl}/election`, { for setting environment variable
-          const response = await fetch('http://127.0.0.1:8000/election', {
+          const response = await fetch(`http://127.0.0.1:8000${endpoint}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -108,7 +120,8 @@ function App() {
             {!isSubmitted ? (
                 
             <form onSubmit={handleSubmit}>
-                <button type="submit">Simulate Multiple Elections</button>
+                <button type="submit" onClick={() => setPredictionType('multi')}>Simulate Multiple Elections</button>
+                <button type="submit" onClick={() => setPredictionType('single')}>Simulate One Election</button>
                 <div>{isLoading && <Loading/>}</div>
                 <h2>Candidates</h2>
                 
@@ -138,7 +151,7 @@ function App() {
             ) : (
             // ResponseSection component
             <>
-            {response && <ResponseSection responseData={response} />}
+            {response && <ResponseSection responseData={response} predictionType={predictionType} />}
             <button onClick={() => setIsSubmitted(false)}>Edit numbers</button>
             </>
             )}
