@@ -13,7 +13,7 @@ function App() {
     
     const [response, setResponse] = useState(null);
    
-    const [isLoading, setIsLoading] = useState(false); 
+    const [isLoading, setIsLoading] = useState(false); //false
 
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -106,9 +106,12 @@ function App() {
             <h1>UA Election Predictor</h1>
             
             {!isSubmitted ? (
+                
             <form onSubmit={handleSubmit}>
-                <button type="button" onClick={resetToDefaults}>Reset to Default Values</button>
+                <button type="submit">Simulate Multiple Elections</button>
+                <div>{isLoading && <Loading/>}</div>
                 <h2>Candidates</h2>
+                
                 
             {/* TextArea component */}
                 <TextArea value={candidatesValue} onChange={handleCandidatesChange} />
@@ -129,15 +132,14 @@ function App() {
                     updateNestedObject={updateNestedObject}
                     maxBallotWinners = {numCandidates - 1}
                 />
-
-                <button type="submit">Submit</button>
-                {isLoading && <Loading/>}
+             
+             <button type="button" onClick={resetToDefaults}>Reset to Default Values</button>
             </form>
             ) : (
             // ResponseSection component
             <>
             {response && <ResponseSection responseData={response} />}
-            <button onClick={() => setIsSubmitted(false)}>New form</button>
+            <button onClick={() => setIsSubmitted(false)}>Edit numbers</button>
             </>
             )}
         </>
