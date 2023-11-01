@@ -13,13 +13,15 @@ function App() {
   
     const [response, setResponse] = useState(null);
 
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
     const handleSubmit = async (event) => {
       event.preventDefault();
     //   const apiUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'; this breaks the fetch
   
       try {
         // const response = await fetch(`${apiUrl}/election`, { for setting environment variable
-          const response = await fetch('http://127.0.0.1:8000/election', {
+          const response = await fetch('http://10.0.0.132:8000/election', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -30,6 +32,7 @@ function App() {
           const responseData = await response.json();
           setResponse(responseData);
           console.log('Successful fetch'); 
+          setIsSubmitted(true);
       } catch (error) {
           console.error('Error making POST request:', error);
       }
@@ -56,10 +59,11 @@ function App() {
     });
   };
   
+//   Rendering Logic
     return (
         <>
             <h1>UA Election Predictor</h1>
-
+            {!isSubmitted ? (
             <form onSubmit={handleSubmit}>
                 <h2>Candidates</h2>
 
@@ -74,7 +78,7 @@ function App() {
                     />
 
             {/* ElectorateInput component */}
-                <ElectorateInput data={data} setData={setData}/>;
+                <ElectorateInput data={data} setData={setData}/>
 
             {/* ElectionSettingsInput component */}
                 <ElectionSettingsInput 
@@ -85,10 +89,13 @@ function App() {
 
                 <button type="submit">Submit</button>
             </form>
-
-            {/* ResponseSection component */}
+            ) : (
+            // ResponseSection component
+            <>
             {response && <ResponseSection responseData={response} />}
-
+            <button onClick={() => setIsSubmitted(false)}>New form</button>
+            </>
+            )}
         </>
     );
 }

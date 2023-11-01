@@ -3,7 +3,7 @@ function ElectionSettingsInput({ data, updateNestedObject, maxBallotWinners }) {
     return (
       <div>
         <h2>Election Settings</h2>
-        <>
+        <div>
         <NumberInput 
           label="Number of Simulations"
           value={data.electionSettings.numOfSims}
@@ -11,7 +11,7 @@ function ElectionSettingsInput({ data, updateNestedObject, maxBallotWinners }) {
           max = {1000}
           onChange={(e) => updateNestedObject(['electionSettings', 'numOfSims'], parseInt(e.target.value, 10))}
         />
-        </>
+        </div>
         <>
         <NumberInput 
           label="Total Voters"
@@ -21,7 +21,7 @@ function ElectionSettingsInput({ data, updateNestedObject, maxBallotWinners }) {
           onChange={(e) => updateNestedObject(['electionSettings', 'totalVoters'], parseInt(e.target.value, 10))}
         />
         </>
-        <>
+        <div>
         <NumberInput 
           label="Ballot Winners"
           value={data.electionSettings.ballotWinners}
@@ -29,7 +29,7 @@ function ElectionSettingsInput({ data, updateNestedObject, maxBallotWinners }) {
           max = {maxBallotWinners}
           onChange={(e) => updateNestedObject(['electionSettings', 'ballotWinners'], parseInt(e.target.value, 10))}
         />
-        </>
+        </div>
       </div>
     );
   }
