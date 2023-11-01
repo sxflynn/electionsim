@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import configData from './config.json';
 import './App.css';
 import TextArea from './TextArea';
@@ -9,11 +9,39 @@ import ResponseSection from './ResponseSection';
 
 function App() {
     // Initial state
-    const [data, setData] = useState(configData);
-  
+    
     const [response, setResponse] = useState(null);
 
     const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const loadFromLocalStorage = () => {
+        try {
+            const serializedData = localStorage.getItem('electionData');
+            if (serializedData == null)
+            return configData;
+        return JSON.parse(serializedData);
+        } catch (error){
+            console.error("Failed to load from local storage", error);
+            return configData;
+        }
+    }
+
+
+    const saveToLocalStorage = (data) => {
+        try {
+            const serializedData = JSON.stringify(data);
+            localStorage.setItem('electionData',serializedData);
+        } catch (error) {
+            console.error("Failed to save to local storage", error);
+        }
+    }
+
+    const [data, setData] = useState(loadFromLocalStorage());
+
+    useEffect(() => {
+        saveToLocalStorage(data);
+    }, [data]);
+
 
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -57,6 +85,12 @@ function App() {
   
       return updatedData;
     });
+    }
+
+    const resetToDefaults = () => {
+        setData(configData);
+        localStorage.removeItem('electionData');
+
   };
   
 //   Rendering Logic
@@ -65,8 +99,9 @@ function App() {
             <h1>UA Election Predictor</h1>
             {!isSubmitted ? (
             <form onSubmit={handleSubmit}>
+                <button type="button" onClick={resetToDefaults}>Reset to Default Values</button>
                 <h2>Candidates</h2>
-
+                
             {/* TextArea component */}
                 <TextArea value={candidatesValue} onChange={handleCandidatesChange} />
 
