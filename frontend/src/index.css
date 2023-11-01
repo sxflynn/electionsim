@@ -82,3 +82,14 @@ button:focus-visible {
 }
 
 
+.response-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center aligns items horizontally */
+  width: 100%; /* Ensures the div takes the full width available */
+}
+
+table {
+  max-width: 80%; /* or any other value that suits your design */
+  margin: 0 auto; /* This centers the table in the horizontal direction if it's less than 100% width */
+}

@@ -8,7 +8,7 @@ function SingleElectionResponse({responseData}){
 
             <p><strong>Datetime:</strong> {responseData.datetime}</p>
 
-            <h3>Candidate Results</h3>
+            <h3>Turnout: {responseData.electionSettings.totalVoters} voters</h3>
             <table>
                 <thead>
                     <tr>

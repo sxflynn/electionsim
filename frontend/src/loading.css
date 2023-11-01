@@ -2,7 +2,7 @@
 .lds-spinner {
     color: official;
     display: inline-block;
-    position: relative;
+    position: absolute;
     width: 40px;
     height: 40px;
 

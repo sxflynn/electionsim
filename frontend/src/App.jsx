@@ -48,10 +48,9 @@ function App() {
     }, [data]);
 
 
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-      setIsLoading(true);
-      console.log('Load submit animation');
+    const performSimulation = async () => {
+
+        console.log('Load submit animation');
     //   const apiUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'; this breaks the fetch
     
     let endpoint;
@@ -66,6 +65,14 @@ function App() {
   
       try {
         // const response = await fetch(`${apiUrl}/election`, { for setting environment variable
+        if (predictionType === 'single') {
+            endpoint = '/one_election';
+            console.log('single election');
+        } else if (predictionType === 'multi') {
+            endpoint = '/election';
+            console.log('multi election');
+        }
+
           const response = await fetch(`http://127.0.0.1:8000${endpoint}`, {
               method: 'POST',
               headers: {
@@ -76,6 +83,7 @@ function App() {
   
           const responseData = await response.json();
           setResponse(responseData);
+
           console.log('Successful fetch'); 
           setIsSubmitted(true);
       } catch (error) {
@@ -83,6 +91,15 @@ function App() {
       }
       setIsLoading(false);
       console.log('Loading state ended');
+
+    }
+
+
+
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      setIsLoading(true);
+      performSimulation();
   };
   const numCandidates = data.candidates.length;
   const candidatesValue = data.candidates.join('\n');
@@ -120,6 +137,7 @@ function App() {
             {!isSubmitted ? (
                 
             <form onSubmit={handleSubmit}>
+                
                 <button type="submit" onClick={() => setPredictionType('multi')}>Simulate Multiple Elections</button>
                 <button type="submit" onClick={() => setPredictionType('single')}>Simulate One Election</button>
                 <div>{isLoading && <Loading/>}</div>
@@ -153,6 +171,9 @@ function App() {
             <>
             {response && <ResponseSection responseData={response} predictionType={predictionType} />}
             <button onClick={() => setIsSubmitted(false)}>Edit numbers</button>
+            <button onClick={performSimulation}>Simulate again</button>
+
+            
             </>
             )}
         </>

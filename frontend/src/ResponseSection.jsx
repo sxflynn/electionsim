@@ -9,6 +9,7 @@ function ResponseSection({ responseData, predictionType }) {
         {predictionType === 'multi' && <MultiElectionResponse responseData={responseData} />}
         {predictionType === 'single' && <SingleElectionResponse responseData={responseData} />}
         </>
+        
     );
 }
 

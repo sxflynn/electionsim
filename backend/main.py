@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from election_config import Config, ElectionResponse, ElectionSettings, SingleElectionResponse
 from election import ElectionSimulator, Election
+import random
 
 
 
@@ -55,6 +56,7 @@ def multielection(config: Config):
 
 @app.post("/one_election", response_model=SingleElectionResponse)
 def singleelection(config: Config):
+    config.electionSettings.totalVoters = random.randint(9000, 12000)
     election = Election(config)
     election.one_election()
     results = election.election_returns
