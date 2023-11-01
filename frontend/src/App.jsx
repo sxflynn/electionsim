@@ -6,11 +6,14 @@ import ElectionSettingsInput from './ElectionSettingsInput';
 import ElectorateInput from './ElectorateInput';
 import VoterProfilesInput from './VoterProfilesInput';
 import ResponseSection from './ResponseSection';
+import Loading from './Loading';
 
 function App() {
     // Initial state
     
     const [response, setResponse] = useState(null);
+   
+    const [isLoading, setIsLoading] = useState(false); 
 
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -45,6 +48,8 @@ function App() {
 
     const handleSubmit = async (event) => {
       event.preventDefault();
+      setIsLoading(true);
+      console.log('Load submit animation');
     //   const apiUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000'; this breaks the fetch
   
       try {
@@ -64,6 +69,8 @@ function App() {
       } catch (error) {
           console.error('Error making POST request:', error);
       }
+      setIsLoading(false);
+      console.log('Loading state ended');
   };
   const numCandidates = data.candidates.length;
   const candidatesValue = data.candidates.join('\n');
@@ -97,6 +104,7 @@ function App() {
     return (
         <>
             <h1>UA Election Predictor</h1>
+            
             {!isSubmitted ? (
             <form onSubmit={handleSubmit}>
                 <button type="button" onClick={resetToDefaults}>Reset to Default Values</button>
@@ -104,7 +112,7 @@ function App() {
                 
             {/* TextArea component */}
                 <TextArea value={candidatesValue} onChange={handleCandidatesChange} />
-
+            
             {/* VoterProfilesInput component */}
                 <VoterProfilesInput 
                     voterProfilesData = {data.voterProfiles}
@@ -123,6 +131,7 @@ function App() {
                 />
 
                 <button type="submit">Submit</button>
+                {isLoading && <Loading/>}
             </form>
             ) : (
             // ResponseSection component
