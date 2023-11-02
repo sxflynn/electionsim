@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  fastapi-backend:
+    build:
+      context: ./backend/
+      dockerfile: ./DockerfileProd
+    ports:
+      - "8000:8000"
+    # Note: For production, you might not want to mount the entire directory, 
+    # but instead rely on the Docker image itself.
+    networks:
+      - electionsim-network
+
+  react-frontend:
+    build:
+      context: ./frontend/
+      dockerfile: ./DockerfileProd
+    ports:
+      - "5173:5173"
+    # Same note as above regarding volumes in production
+    networks:
+      - electionsim-network
+
+networks:
+  electionsim-network:
+    driver: bridge

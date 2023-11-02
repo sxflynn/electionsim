@@ -1,0 +1,23 @@
+# Use Alpine-based Node image (consider pinning to a specific version)
+FROM node:alpine
+
+# Set the working directory
+WORKDIR /srv/app
+
+# Install dependencies (You're already in /srv/app)
+COPY package.json package-lock.json ./
+RUN npm install --silent
+
+# Copy the rest of the code (assuming .dockerignore handles unwanted files)
+COPY . .
+
+# Build the production assets and cleanup unnecessary files
+RUN npm run build && \
+    rm -rf node_modules && \
+    npm install -g serve
+
+# Expose the port (default for serve is 5173, but you can configure this)
+EXPOSE 5173
+
+# Command to serve your production assets
+CMD ["serve", "-s", "dist", "-l", "0.0.0.0:5173"]
