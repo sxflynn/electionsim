@@ -7,6 +7,10 @@ import ElectorateInput from './ElectorateInput';
 import VoterProfilesInput from './VoterProfilesInput';
 import ResponseSection from './ResponseSection';
 import Loading from './Loading';
+import { randomizeData } from './randomize';
+import About from './About';
+
+
 
 function App() {
     // Initial state
@@ -18,6 +22,9 @@ function App() {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const [predictionType, setPredictionType] = useState(''); // multi or single
+
+    const [showAbout, setShowAbout] = useState(false);
+
 
     const loadFromLocalStorage = () => {
         try {
@@ -73,7 +80,7 @@ function App() {
             console.log('multi election');
         }
 
-          const response = await fetch(`http://127.0.0.1:8000${endpoint}`, {
+          const response = await fetch(`http://10.0.0.132:8000${endpoint}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -132,7 +139,21 @@ function App() {
 //   Rendering Logic
     return (
         <>
-            <h1>UA Election Predictor</h1>
+            <div className="navbar">
+                <div><a href = "/"><img src="/bearicon.svg" alt="Bear Icon" className="website-icon" /></a></div>
+                <div><a href="/about" onClick={(e) => { e.preventDefault(); setShowAbout(!showAbout); }}>About</a></div>
+                <div><a href = "https://github.com/sxflynn/electionsim">GitHub Source</a></div>
+                <div><a href = "/contact">Feedback</a></div>
+            </div>
+
+            {showAbout && <About onClose={() => setShowAbout(false)} />}
+
+
+
+            
+
+            <h1 className="reduced-padding">Ballot Bear</h1>
+            <h2 className="h2-italics">Simulate local election results</h2>
             
             {!isSubmitted ? (
                 
@@ -165,17 +186,20 @@ function App() {
                 />
              
              <button type="button" onClick={resetToDefaults}>Reset to Default Values</button>
+             <button type="button" onClick={() => randomizeData(configData, setData)}>Randomize</button>
+
             </form>
             ) : (
             // ResponseSection component
             <>
             {response && <ResponseSection responseData={response} predictionType={predictionType} />}
             <button onClick={() => setIsSubmitted(false)}>Edit numbers</button>
-            <button onClick={performSimulation}>Simulate again</button>
-
+            <button onClick={() => {setIsLoading(true);performSimulation();}}>Simulate again</button>
+            <div>{isLoading && <Loading/>}</div>
             
             </>
             )}
+            <>Created by <a href ="https://www.linkedin.com/in/sxflynn/">Stephen Flynn</a></>
         </>
     );
 }

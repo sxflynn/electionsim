@@ -1,7 +1,7 @@
 function NumberInput({ label, value, min, max, step, onChange }) {
     return (
       <label>
-        {label}:
+        {label}
         <input
           type="number"
           value={value}

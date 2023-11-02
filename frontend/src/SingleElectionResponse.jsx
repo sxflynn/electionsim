@@ -6,8 +6,6 @@ function SingleElectionResponse({responseData}){
         <div className="response-section">
             <h2>Election Results</h2>
 
-            <p><strong>Datetime:</strong> {responseData.datetime}</p>
-
             <h3>Turnout: {responseData.electionSettings.totalVoters} voters</h3>
             <table>
                 <thead>

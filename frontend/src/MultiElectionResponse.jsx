@@ -3,11 +3,7 @@ function MultiElectionResponse({responseData}){
 
     return(
         <div className="response-section">
-            <h2>Prediction Results</h2>
-
-            <p><strong>Datetime:</strong> {responseData.datetime}</p>
-
-            <h3>Candidate Results</h3>
+            <h2>Data from {responseData.electionSettings.numOfSims} elections simulations</h2>
             <table>
                 <thead>
                     <tr>
