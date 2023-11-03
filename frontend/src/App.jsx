@@ -82,7 +82,7 @@ function App() {
             console.log('multi election');
         }
 
-        const response = await fetch(`https://fastapi-election.fly.dev${endpoint}`, {
+        const response = await fetch(`https://fastapi-staging.fly.dev${endpoint}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
