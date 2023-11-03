@@ -3,7 +3,7 @@ function MultiElectionResponse({responseData}){
 
     return(
         <div className="response-section">
-            <h2>Data from {responseData.electionSettings.numOfSims} elections simulations</h2>
+            <h2>Data from {responseData.electionSettings.numOfSims} election simulations</h2>
             <table>
                 <thead>
                     <tr>
