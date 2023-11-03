@@ -55,7 +55,7 @@ class Election:
 
     def decide_vote(self, preferences):
         ballot_dict = {name: 0 for name in self.config.candidates}
-        rand = random.uniform(0, 1)  # rand = random.uniform(0, 1)    # rand = random.SystemRandom().uniform(0, 1)
+        rand = random.SystemRandom().uniform(0, 1)  # rand = random.uniform(0, 1)    # rand = random.SystemRandom().uniform(0, 1)
         for _ in range(1): # lower values increase speed and variation
             for candidate, _ in ballot_dict.items():
                 if rand < preferences.get(candidate):
