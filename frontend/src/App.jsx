@@ -174,8 +174,8 @@ function App() {
                 
             <form onSubmit={handleSubmit}>
                 
-                <button className="app-button" type="submit" onClick={() => setPredictionType('multi')}>Simulate Multiple Elections</button>
-                <button className="app-button" type="submit" onClick={() => setPredictionType('single')}>Simulate One Election</button>
+                <button className={`app-button ${isLoading ? 'loading' : ''}`} type="submit" disabled={isLoading} onClick={() => setPredictionType('multi')}>Simulate Multiple Elections</button>
+                <button className={`app-button ${isLoading ? 'loading' : ''}`} type="submit" disabled={isLoading} onClick={() => setPredictionType('single')}>Simulate One Election</button>
                 <div>{isLoading && <Loading/>}</div>
                 <h2>Candidates</h2>
                 
@@ -212,7 +212,7 @@ function App() {
             <>
             {response && <ResponseSection responseData={response} predictionType={predictionType} isEdited={isEdited} />}
             <button className="app-button" onClick={() => setIsSubmitted(false)}>Edit numbers</button>
-            <button className="app-button" onClick={() => {setIsLoading(true);performSimulation();}}>Simulate again</button>
+            <button className={`app-button ${isLoading ? 'loading' : ''}`} disabled={isLoading} onClick={() => {setIsLoading(true);performSimulation();}}>Simulate again</button>
             <div>{isLoading && <Loading/>}</div>
             
             </>

@@ -119,3 +119,20 @@ flex-direction: column;
     border-color: #999999; /* Darker border for active state */
   }
 }
+.app-button.loading {
+  background-color: #b0b0b0; /* Gray background for disabled appearance */
+  color: #888888;            /* Dimmed text color */
+  cursor: not-allowed;       /* Indicate that the button is not clickable */
+  pointer-events: none;      /* Ensures the button doesn't react to clicks */
+  border: 1px solid #999999; /* Slight border for definition */
+}
+
+/* Override for light mode when isLoading is true */
+@media (prefers-color-scheme: light) {
+  .app-button.loading {
+    background-color: #e8e8e8; /* Lighter gray background for disabled appearance in light mode */
+    color: #b0b0b0;            /* Light gray text color in light mode */
+    border: 1px solid #d0d0d0; /* Lighter border for light mode */
+  }
+}
+
