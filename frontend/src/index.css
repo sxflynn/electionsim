@@ -175,6 +175,9 @@ table {
   border: 1px solid #ccc;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   z-index: 1000; /* Ensure it appears above other content */
+  /* ... existing styles ... */
+  overflow-y: auto; /* Enables vertical scrolling if the content overflows */
+  max-height: 90vh; /* Restrict the maximum height to 90% of the viewport height */
 }
 
 
@@ -218,6 +221,21 @@ textarea::placeholder {
 }
 
 
+@media (prefers-color-scheme: dark) {
+  .about-section {
+    background-color: #333; /* Dark gray background */
+    color: #f5f5f5; /* Light text for visibility */
+  }
+}
+
+/* This will ensure that on screens or windows narrower than 600px, the about box will take up the full width */
+@media (max-width: 800px) {
+  .about-section {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box; /* ensures padding doesn't cause overflow */
+  }
+}
 
 
 

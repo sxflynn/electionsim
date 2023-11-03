@@ -8,7 +8,7 @@ function About({ onClose }) {
             <h4>How is the website programmed?</h4>
             <p>The election predicting engine is written in Python, while the frontend website display is written in React. All source code is available on Github and reporting technical issues is encouraged.</p>
             {/* Add a close button */}
-            <button onClick={onClose}>Close window</button>
+            <button className="app-button" onClick={onClose}>Close window</button>
         </div>
     );
 }

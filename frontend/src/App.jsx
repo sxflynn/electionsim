@@ -21,6 +21,8 @@ function App() {
 
     const [isSubmitted, setIsSubmitted] = useState(false);
 
+    const [isEdited, setIsEdited] = useState(false);
+
     const [predictionType, setPredictionType] = useState(''); // multi or single
 
     const [showAbout, setShowAbout] = useState(false);
@@ -116,6 +118,7 @@ function App() {
       ...data,
       candidates: e.target.value.split('\n'),
     });
+    setIsEdited(true);
   };
 
   const updateNestedObject = (path, value) => {
@@ -125,14 +128,18 @@ function App() {
   
       // Use reduce to navigate to the deepest object
       path.slice(0, -1).reduce((obj, key) => obj[key], updatedData)[path.slice(-1)[0]] = value;
-  
+        
       return updatedData;
     });
+    setIsEdited(true);
+    console.log("Values edited")
     }
 
     const resetToDefaults = () => {
         setData(configData);
         localStorage.removeItem('electionData');
+        setIsEdited(false);
+        console.log("Edited set to false");
 
   };
   
@@ -143,7 +150,7 @@ function App() {
                 <div><a href = "/"><img src="/bearicon.svg" alt="Bear Icon" className="website-icon" /></a></div>
                 <div><a href="/about" onClick={(e) => { e.preventDefault(); setShowAbout(!showAbout); }}>About</a></div>
                 <div><a href = "https://github.com/sxflynn/electionsim">GitHub Source</a></div>
-                <div><a href = "/contact">Feedback</a></div>
+                <div><a href = "https://github.com/sxflynn">Contact</a></div>
             </div>
 
             {showAbout && <About onClose={() => setShowAbout(false)} />}
@@ -159,47 +166,50 @@ function App() {
                 
             <form onSubmit={handleSubmit}>
                 
-                <button type="submit" onClick={() => setPredictionType('multi')}>Simulate Multiple Elections</button>
-                <button type="submit" onClick={() => setPredictionType('single')}>Simulate One Election</button>
+                <button className="app-button" type="submit" onClick={() => setPredictionType('multi')}>Simulate Multiple Elections</button>
+                <button className="app-button" type="submit" onClick={() => setPredictionType('single')}>Simulate One Election</button>
                 <div>{isLoading && <Loading/>}</div>
                 <h2>Candidates</h2>
                 
                 
             {/* TextArea component */}
-                <TextArea value={candidatesValue} onChange={handleCandidatesChange} />
+                <TextArea value={candidatesValue} onChange={handleCandidatesChange} setIsEdited={setIsEdited} />
             
             {/* VoterProfilesInput component */}
                 <VoterProfilesInput 
                     voterProfilesData = {data.voterProfiles}
                     candidates = {data.candidates}
                     updateNestedObject={updateNestedObject}
+                    setIsEdited={setIsEdited}
                     />
 
             {/* ElectorateInput component */}
-                <ElectorateInput data={data} setData={setData}/>
+                <ElectorateInput data={data} setData={setData} setIsEdited={setIsEdited}/>
 
             {/* ElectionSettingsInput component */}
                 <ElectionSettingsInput 
                     data={data} 
                     updateNestedObject={updateNestedObject}
                     maxBallotWinners = {numCandidates - 1}
+                    setIsEdited={setIsEdited}
                 />
              
-             <button type="button" onClick={resetToDefaults}>Reset to Default Values</button>
-             <button type="button" onClick={() => randomizeData(configData, setData)}>Randomize</button>
-
+             <button className="app-button" type="button" onClick={resetToDefaults}>Reset to Default Values</button>
+             <button className="app-button" type="button" onClick={() => randomizeData(configData, setData, setIsEdited)}>Randomize</button>
+             
+             <div>Created by <a href ="https://www.linkedin.com/in/sxflynn/">Stephen Flynn</a></div>
             </form>
             ) : (
             // ResponseSection component
             <>
-            {response && <ResponseSection responseData={response} predictionType={predictionType} />}
-            <button onClick={() => setIsSubmitted(false)}>Edit numbers</button>
-            <button onClick={() => {setIsLoading(true);performSimulation();}}>Simulate again</button>
+            {response && <ResponseSection responseData={response} predictionType={predictionType} isEdited={isEdited} />}
+            <button className="app-button" onClick={() => setIsSubmitted(false)}>Edit numbers</button>
+            <button className="app-button" onClick={() => {setIsLoading(true);performSimulation();}}>Simulate again</button>
             <div>{isLoading && <Loading/>}</div>
             
             </>
             )}
-            <>Created by <a href ="https://www.linkedin.com/in/sxflynn/">Stephen Flynn</a></>
+            
         </>
     );
 }

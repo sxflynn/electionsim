@@ -1,6 +1,6 @@
 // randomizeUtils.js
 
-export const randomizeData = (configData, setData) => {
+export const randomizeData = (configData, setData, setIsEdited) => {
     // Generate randomized electorate data such that they sum up to 1
     let rep = Math.random();
     let ind = Math.random();
@@ -36,4 +36,7 @@ export const randomizeData = (configData, setData) => {
         electorate: randomizedElectorate,
         voterProfiles: randomizedVoterProfiles
     }));
+
+    setIsEdited(true);
+    console.log("Edited set to true");
 }

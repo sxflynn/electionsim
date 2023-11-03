@@ -1,4 +1,4 @@
-function TextArea({value, onChange}){
+function TextArea({value, onChange, setIsEdited}){
 
     return (
         <textarea 

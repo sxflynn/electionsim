@@ -1,10 +1,10 @@
-function SingleElectionResponse({responseData}){
+function SingleElectionResponse({responseData, isEdited}){
 
     const totalVotes = Object.values(responseData.results).reduce((accumulator, votes) => accumulator + votes, 0);
 
     return(
         <div className="response-section">
-            <h2>Election Results</h2>
+        <h2>{isEdited ? "Your Simulated Election Results" : "Simulated Election Results"}</h2>
 
             <h3>Turnout: {responseData.electionSettings.totalVoters} voters</h3>
             <table>

@@ -1,6 +1,6 @@
 import NumberInput from "./NumberInput";
 
-function VoterProfilesInput({ voterProfilesData, candidates, updateNestedObject }) {
+function VoterProfilesInput({ voterProfilesData, candidates, updateNestedObject, setIsEdited }) {
     return (
         <div>
             <h2>Voter Profiles</h2>
@@ -24,10 +24,10 @@ function VoterProfilesInput({ voterProfilesData, candidates, updateNestedObject 
                                             min="0" 
                                             max="1" 
                                             step="0.01"
-                                            onChange={e => updateNestedObject(
-                                                ['voterProfiles', party, candidate],
-                                                parseFloat(e.target.value))
-                                            }
+                                            onChange={e => {
+                                                updateNestedObject(['voterProfiles', party, candidate], parseFloat(e.target.value));
+                                                setIsEdited(true);
+                                            }}
                                         />
                                     </td>
                                 </tr>
