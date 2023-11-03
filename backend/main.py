@@ -12,15 +12,16 @@ app = FastAPI()
 
 # CORS middleware settings
 origins = [
-    "http://localhost:5173",
-    # Dev Frontend
-    # "https://your-deployment-frontend-domain.com",  # Prod domain
+    "http://localhost:5173",  # Local development
+    "http://127.0.0.1:5173",  # Alternative local development
+    "https://staging.ballotbear.app",  # Staging domain
+    "https://vercel.app",  # Vercel staging
+    "https://ballotbear.app",  # Production domain
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    # allow_origins=origins,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
