@@ -238,5 +238,27 @@ textarea::placeholder {
   }
 }
 
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid red;
+  background-color: #ffe6e6;
+}
 
+.dismiss-error-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 5px;
+  margin-left: 10px;
+  color: red;
+  font-weight: bold;
+  vertical-align: middle;
+}
 
+.dismiss-error-btn:hover {
+  text-decoration: underline;
+}

@@ -9,6 +9,7 @@ import ResponseSection from './ResponseSection';
 import Loading from './Loading';
 import { randomizeData } from './randomize';
 import About from './About';
+import Error from './Error';
 
 
 
@@ -27,6 +28,8 @@ function App() {
 
     const [showAbout, setShowAbout] = useState(false);
 
+    const [error, setError] = useState(null);
+
 
     const loadFromLocalStorage = () => {
         try {
@@ -36,6 +39,7 @@ function App() {
         return JSON.parse(serializedData);
         } catch (error){
             console.error("Failed to load from local storage", error);
+            setError("Failed to load from local storage");
             return configData;
         }
     }
@@ -47,6 +51,7 @@ function App() {
             localStorage.setItem('electionData',serializedData);
         } catch (error) {
             console.error("Failed to save to local storage", error);
+            setError("Failed to save to local storage");
         }
     }
 
@@ -82,7 +87,7 @@ function App() {
             console.log('multi election');
         }
 
-        const response = await fetch(`https://fastapi-staging.fly.dev${endpoint}`, {
+        const response = await fetch(`https://fastapi-election.fly.dev${endpoint}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -97,6 +102,7 @@ function App() {
           setIsSubmitted(true);
       } catch (error) {
           console.error('Error making POST request:', error);
+          setError('Error making POST request. Please try again.');
       }
       setIsLoading(false);
       console.log('Loading state ended');
@@ -152,6 +158,8 @@ function App() {
                 <div><a href = "https://github.com/sxflynn/electionsim">GitHub Source</a></div>
                 <div><a href = "https://github.com/sxflynn">Contact</a></div>
             </div>
+
+            {error && <Error error={error} onDismiss={() => setError(null)} />}
 
             {showAbout && <About onClose={() => setShowAbout(false)} />}
 
