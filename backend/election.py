@@ -15,7 +15,7 @@ def sameList(list1, list2): #returns true if two lists are identical
 class ElectionSimulator:
     def __init__(self, config: ConfigFile):
         self.config = config
-        self.election_returns = {name: 0 for name in self.config.candidates}
+        self.election_returns = {name: 0 for name in self.config.candidates} #unused?
         self.election_wins = {name: 0 for name in self.config.candidates}
 
     def add_wins(self, election_results):
@@ -34,7 +34,7 @@ class ElectionSimulator:
         :return: A list of tuples containing candidate names and win counts.
         :rtype: List[Tuple[str, int]]
         """
-        for i in range(self.config.electionSettings.numOfSims):
+        for _ in range(self.config.electionSettings.numOfSims):
             election = Election(self.config)
             self.add_wins(election.one_election()) #False means do not run as single election
         wins_sorted = sortItems(self.election_wins)
@@ -52,10 +52,11 @@ class Election:
     def __init__(self, config: ConfigFile):
         self.config = config
         self.election_returns = {name: 0 for name in self.config.candidates}
+        self.bullet_by_party = {name: 0 for name in self.config.candidates} #count how many bullet voters there were by party
 
     def decide_vote(self, preferences):
         ballot_dict = {name: 0 for name in self.config.candidates}
-        rand = random.SystemRandom().uniform(0, 1)  # rand = random.uniform(0, 1)    # rand = random.SystemRandom().uniform(0, 1)
+        rand = random.SystemRandom().uniform(0, 1) if self.config.electionSettings.SystemRandom else random.uniform(0, 1)
         for _ in range(1): # lower values increase speed and variation
             for candidate, _ in ballot_dict.items():
                 if rand < preferences.get(candidate):
@@ -64,8 +65,19 @@ class Election:
     
     def vote(self, profile):
         ballot_dict = self.decide_vote(self.config.voterProfiles[profile])
-        pref_sorted = sortItems(ballot_dict)
-        vote_cast = [k for k, v in pref_sorted if v > 0][:self.config.electionSettings.numOfSims] #bulletvoting now supported
+        pref_sorted = sortItems(ballot_dict) #place selected names at front
+        vote_cast = [k for k, v in pref_sorted][:self.config.electionSettings.ballotWinners] #default full ballot method
+        if self.config.electionSettings.StrictPreferenceVoting:
+            percent_strict_preference = self.config.electorate[profile]['percentStrictPreference']
+            rand = random.SystemRandom().uniform(0, 1) if self.config.electionSettings.SystemRandom else random.uniform(0, 1)
+            if rand <= percent_strict_preference:
+                strict_vote_cast = [k for k, v in pref_sorted if v > 0][:self.config.electionSettings.ballotWinners] # only vote for preferences
+                if strict_vote_cast: #if list contains names
+                    vote_cast = strict_vote_cast
+                else:
+                    voter_preferences = self.config.voterProfiles[profile] #for rare cases of empty ballots
+                    pref_sorted = sorted(voter_preferences.items(), key=lambda x: x[1], reverse=True)
+                    vote_cast = [candidate for candidate, _ in pref_sorted][:self.config.electionSettings.ballotWinners] #empty ballots will be filled by voter preference
         return vote_cast
 
     def add_returns(self, ballot):
@@ -73,7 +85,8 @@ class Election:
             self.election_returns[i]+=1
 
     def people_decide(self, electorate):
-        for party, party_proportion in electorate.items():
+        for party, party_data in electorate.items():
+            party_proportion = party_data['size']
             num_votes = int(self.config.electionSettings.totalVoters * float(party_proportion))
             for _ in range(num_votes):
                 self.add_returns(self.vote(party))

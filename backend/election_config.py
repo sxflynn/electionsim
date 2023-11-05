@@ -7,11 +7,13 @@ class ElectionSettings(BaseModel):
     numOfSims: int
     totalVoters: int
     ballotWinners: int
+    SystemRandom: bool
+    StrictPreferenceVoting: bool
 
 class Config(BaseModel):
     candidates: List[str]
     voterProfiles: Dict[str, Dict[str, float]]
-    electorate: Dict[str, float]
+    electorate: Dict[str, Dict[str, float]]
     electionSettings: ElectionSettings
     message: str
 
@@ -27,14 +29,14 @@ class ElectionResponse(BaseModel):
     datetime: str
     candidates: Dict[str, CandidateWin]
     voterProfiles: Dict[str, Dict[str, float]]
-    electorate: Dict[str, float]
+    electorate: Dict[str, Dict[str, float]]
     electionSettings: ElectionSettings
     
 class SingleElectionResponse(BaseModel):
     datetime: str
     results: Dict[str, int]
     voterProfiles: Dict[str, Dict[str, float]]
-    electorate: Dict[str, float]
+    electorate: Dict[str, Dict[str, float]]
     electionSettings: ElectionSettings
 
 class ConfigFile:
