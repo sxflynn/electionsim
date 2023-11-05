@@ -52,7 +52,7 @@ class Election:
     def __init__(self, config: ConfigFile):
         self.config = config
         self.election_returns = {name: 0 for name in self.config.candidates}
-        self.bullet_by_party = {name: 0 for name in self.config.candidates} #count how many bullet voters there were by party
+        self.strict_voters_by_party = {party: 0 for party in self.config.electorate.keys()} #count how many bullet voters there were by party
 
     def decide_vote(self, preferences):
         ballot_dict = {name: 0 for name in self.config.candidates}
@@ -78,6 +78,7 @@ class Election:
                     voter_preferences = self.config.voterProfiles[profile] #for rare cases of empty ballots
                     pref_sorted = sorted(voter_preferences.items(), key=lambda x: x[1], reverse=True)
                     vote_cast = [candidate for candidate, _ in pref_sorted][:self.config.electionSettings.ballotWinners] #empty ballots will be filled by voter preference
+            self.strict_voters_by_party[profile] += 1
         return vote_cast
 
     def add_returns(self, ballot):

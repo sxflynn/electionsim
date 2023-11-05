@@ -1,5 +1,6 @@
 import time
 import sys
+import random
 from election import ElectionSimulator, Election
 from election_config import ConfigFile
 
@@ -24,6 +25,7 @@ def print_time(systime):
 def run_one():
     start_time = time.time()
     config = ConfigFile("config.json")
+    config.config_data.electionSettings.totalVoters = random.randint(9000, 12000) #override totalVoters for single election
     election = Election(config.config_data)
     election.one_election()
     results = election.election_returns
