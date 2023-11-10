@@ -15,6 +15,7 @@ origins = [
     "http://localhost:5173",  # Local development
     "http://127.0.0.1:5173",  # Alternative local development
     "https://staging.ballotbear.app",  # Staging domain
+    "https://electionsim-frontend.vercel.app", #Staging domain
     "https://vercel.app",  # Vercel staging
     "https://ballotbear.app",  # Production domain
 ]
