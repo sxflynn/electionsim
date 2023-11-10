@@ -8,11 +8,7 @@ from election_config import Config, ElectionResponse, ElectionSettings, SingleEl
 from election import ElectionSimulator, Election
 import random
 
-
-
-
 app = FastAPI()
-
 
 # CORS middleware settings
 origins = [

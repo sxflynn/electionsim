@@ -18,8 +18,8 @@
         "Republicans":{"size":0.39,"percentStrictPreference":0.90}
     },
     "electionSettings":{
-        "numOfSims": 100,
-        "totalVoters":100,
+        "numOfSims": 500,
+        "totalVoters":1000,
         "ballotWinners":3,
         "SystemRandom":false,
         "StrictPreferenceVoting":false

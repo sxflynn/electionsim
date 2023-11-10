@@ -1,6 +1,7 @@
 import NumberInput from './NumberInput';
 
 function ElectorateInput({ data, setData, setIsEdited }) {
+    console.log(data.electorate)
 
     const handleElectorateChange = (party, key, value) => {
         setData(prevData => ({
