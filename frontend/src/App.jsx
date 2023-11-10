@@ -88,7 +88,7 @@ function App() {
         }
 
         // const response = await fetch(`https://fastapi-election.fly.dev${endpoint}`, {
-        const response = await fetch(`http://localhost:8000${endpoint}`, {
+        const response = await fetch(`https://fastapi-staging.fly.dev${endpoint}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
