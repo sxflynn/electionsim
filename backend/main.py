@@ -1,9 +1,13 @@
+#debugging start
+import uvicorn
+#debugging end
 import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from election_config import Config, ElectionResponse, ElectionSettings, SingleElectionResponse
 from election import ElectionSimulator, Election
 import random
+
 
 
 
@@ -42,7 +46,9 @@ def multielection(config: Config):
     election_settings = ElectionSettings(
         numOfSims=config.electionSettings.numOfSims,
         totalVoters=config.electionSettings.totalVoters,
-        ballotWinners=config.electionSettings.ballotWinners
+        ballotWinners=config.electionSettings.ballotWinners,
+        SystemRandom=config.electionSettings.SystemRandom,
+        StrictPreferenceVoting=config.electionSettings.StrictPreferenceVoting
     )
     response_data = {
         "datetime": datetime_str,
@@ -66,7 +72,9 @@ def singleelection(config: Config):
     election_settings = ElectionSettings(
         numOfSims=config.electionSettings.numOfSims,
         totalVoters=config.electionSettings.totalVoters,
-        ballotWinners=config.electionSettings.ballotWinners
+        ballotWinners=config.electionSettings.ballotWinners,
+        SystemRandom=config.electionSettings.SystemRandom,
+        StrictPreferenceVoting=config.electionSettings.StrictPreferenceVoting
     )
     response_data = {
         "datetime": datetime_str,
@@ -77,3 +85,7 @@ def singleelection(config: Config):
     }
     single_election_response = SingleElectionResponse(**response_data)
     return single_election_response
+
+#debugging
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8005)
