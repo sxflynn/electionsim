@@ -1,1 +1,3 @@
 flyctl deploy --dockerfile DockerfileProd --local-only
+flyctl deploy --dockerfile DockerfileProd
+
