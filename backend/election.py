@@ -1,6 +1,6 @@
 import random
 import json
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 from election_config import ConfigFile
 
 
@@ -74,8 +74,8 @@ class Election:
                 strict_vote_cast = [k for k, v in pref_sorted if v > 0][:self.config.electionSettings.ballotWinners] # only vote for preferences
                 if strict_vote_cast: #if list contains names
                     vote_cast = strict_vote_cast
-                else:
-                    voter_preferences = self.config.voterProfiles[profile] #for rare cases of empty ballots
+                else: #for rare cases of empty ballots
+                    voter_preferences = self.config.voterProfiles[profile] 
                     pref_sorted = sorted(voter_preferences.items(), key=lambda x: x[1], reverse=True)
                     vote_cast = [candidate for candidate, _ in pref_sorted][:self.config.electionSettings.ballotWinners] #empty ballots will be filled by voter preference
             self.strict_voters_by_party[profile] += 1
