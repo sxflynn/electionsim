@@ -1,40 +1,76 @@
 {
-    "datetime":"",
+    "datetime": "2023-11-11 03:42:02",
     "candidates": {
-        "Nidhi": {
-            "numberOfWins": 9,
-            "probabilityToWin": "90.0%"
+        "Jenny McKenna": {
+            "numberOfWins": 78,
+            "probabilityToWin": "78.0%"
         },
-        "Lou": {
-            "numberOfWins": 7,
-            "probabilityToWin": "70.0%"
+        "Liz Stump": {
+            "numberOfWins": 65,
+            "probabilityToWin": "65.0%"
         },
-        "Liz": {
-            "numberOfWins": 3,
-            "probabilityToWin": "30.0%"
+        "Sumia Mohamed": {
+            "numberOfWins": 65,
+            "probabilityToWin": "65.0%"
         },
-        "Scott": {
-            "numberOfWins": 1,
-            "probabilityToWin": "10.0%"
+        "Lori Trent": {
+            "numberOfWins": 55,
+            "probabilityToWin": "55.0%"
         },
-        "Carol": {
-            "numberOfWins": 0,
-            "probabilityToWin": "0.0%"
+        "Glen Dugger": {
+            "numberOfWins": 26,
+            "probabilityToWin": "26.0%"
+        },
+        "Ruth Edmonds": {
+            "numberOfWins": 11,
+            "probabilityToWin": "11.0%"
         }
     },
-    "voterProfiles":{
-        "DEM":{"Liz": 0.02, "Lou": 0.05, "Nidhi":0.95, "Scott":0.60, "Carol":0.85},
-        "IND":{"Liz": 0.30, "Lou": 0.45, "Nidhi":0.35, "Scott":0.70, "Carol":0.55},
-        "GOP":{"Liz": 0.90, "Lou": 0.98, "Nidhi":0.02, "Scott":0.20, "Carol":0.05}
+    "voterProfiles": {
+        "Democrats": {
+            "Jenny McKenna": 0.6,
+            "Lori Trent": 0.4,
+            "Glen Dugger": 0.05,
+            "Ruth Edmonds": 0.05,
+            "Sumia Mohamed": 0.85,
+            "Liz Stump": 0.85
+        },
+        "Independents": {
+            "Jenny McKenna": 0.9,
+            "Lori Trent": 0.75,
+            "Glen Dugger": 0.3,
+            "Ruth Edmonds": 0.1,
+            "Sumia Mohamed": 0.45,
+            "Liz Stump": 0.45
+        },
+        "Republicans": {
+            "Jenny McKenna": 0.25,
+            "Lori Trent": 0.45,
+            "Glen Dugger": 0.95,
+            "Ruth Edmonds": 0.9,
+            "Sumia Mohamed": 0.05,
+            "Liz Stump": 0.05
+        }
     },
-    "electorate":{
-        "GOP":0.39,
-        "IND":0.15,
-        "DEM":0.46
+    "electorate": {
+        "Democrats": {
+            "size": 0.46,
+            "percentStrictPreference": 0.2
+        },
+        "Independents": {
+            "size": 0.15,
+            "percentStrictPreference": 0.4
+        },
+        "Republicans": {
+            "size": 0.39,
+            "percentStrictPreference": 0.9
+        }
     },
-    "electionSettings":{
-        "numOfSims": 10,
-        "totalVoters":1000,
-        "ballotWinners":2
+    "electionSettings": {
+        "numOfSims": 100,
+        "totalVoters": 100,
+        "ballotWinners": 3,
+        "SystemRandom": false,
+        "StrictPreferenceVoting": false
     }
 }
