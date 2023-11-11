@@ -23,6 +23,16 @@ services:
     networks:
       - electionsim-network
 
+  fastapi-backend-test:
+    build:
+      context: ./backend/
+      dockerfile: DockerfileTest
+    volumes:
+      - ./backend/:/app
+    command: pytest
+    profiles:
+      - test
+
 volumes:
   node_modules:
 
