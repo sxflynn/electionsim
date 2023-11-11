@@ -1,0 +1,58 @@
+{
+    "datetime": "2023-11-11 03:41:19",
+    "results": {
+        "Jenny McKenna": 6231,
+        "Liz Stump": 6137,
+        "Sumia Mohamed": 6077,
+        "Lori Trent": 5982,
+        "Glen Dugger": 5653,
+        "Ruth Edmonds": 5320
+    },
+    "voterProfiles": {
+        "Democrats": {
+            "Jenny McKenna": 0.6,
+            "Lori Trent": 0.4,
+            "Glen Dugger": 0.05,
+            "Ruth Edmonds": 0.05,
+            "Sumia Mohamed": 0.85,
+            "Liz Stump": 0.85
+        },
+        "Independents": {
+            "Jenny McKenna": 0.9,
+            "Lori Trent": 0.75,
+            "Glen Dugger": 0.3,
+            "Ruth Edmonds": 0.1,
+            "Sumia Mohamed": 0.45,
+            "Liz Stump": 0.45
+        },
+        "Republicans": {
+            "Jenny McKenna": 0.25,
+            "Lori Trent": 0.45,
+            "Glen Dugger": 0.95,
+            "Ruth Edmonds": 0.9,
+            "Sumia Mohamed": 0.05,
+            "Liz Stump": 0.05
+        }
+    },
+    "electorate": {
+        "Democrats": {
+            "size": 0.46,
+            "percentStrictPreference": 0.2
+        },
+        "Independents": {
+            "size": 0.15,
+            "percentStrictPreference": 0.4
+        },
+        "Republicans": {
+            "size": 0.39,
+            "percentStrictPreference": 0.9
+        }
+    },
+    "electionSettings": {
+        "numOfSims": 100,
+        "totalVoters": 11800,
+        "ballotWinners": 3,
+        "SystemRandom": false,
+        "StrictPreferenceVoting": false
+    }
+}
