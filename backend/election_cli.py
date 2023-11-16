@@ -29,6 +29,15 @@ def run_one():
     election = Election(config.config_data)
     election.one_election()
     results = election.election_returns
+    print("strict_voters_by_party" + str(election.strict_voters_by_party))
+    
+    print("total_voters_by_party" + str(election.total_voters_by_party))
+    print("total_candidates_voted_by_party" + str(election.total_candidates_voted_by_party))
+    print("strict_voters_by_party" + str(election.strict_voters_by_party))
+    print("percent_strict_voters_by_party" + str(election.percent_strict_voters_by_party))
+    print("avg_candidates_per_ballot_by_party" + str(election.avg_candidates_per_ballot_by_party))
+    
+    
     print(str(results))
     stop_watch = time.time() - start_time
     print_time(stop_watch)

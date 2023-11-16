@@ -89,7 +89,8 @@ function App() {
 
 
         // const response = await fetch(`https://fastapi-election.fly.dev${endpoint}`, {
-        const response = await fetch(`https://fastapi-staging.fly.dev${endpoint}`, {
+            //    const response = await fetch(`https://fastapi-staging.fly.dev${endpoint}`, {
+        const response = await fetch(`http://127.0.0.1:8000${endpoint}`, {
 
               method: 'POST',
               headers: {

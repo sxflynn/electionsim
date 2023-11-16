@@ -25,7 +25,7 @@ function ElectorateInput({ data, setData, setIsEdited }) {
                     <tr>
                         <th>Party</th>
                         <th>Size</th>
-                        <th>Percent Strict Preference</th>
+                        <th>Strictness</th>
                     </tr>
                 </thead>
                 <tbody>

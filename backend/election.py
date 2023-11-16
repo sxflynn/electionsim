@@ -15,7 +15,6 @@ def sameList(list1, list2): #returns true if two lists are identical
 class ElectionSimulator:
     def __init__(self, config: ConfigFile):
         self.config = config
-        self.election_returns = {name: 0 for name in self.config.candidates} #unused?
         self.election_wins = {name: 0 for name in self.config.candidates}
 
     def add_wins(self, election_results):
@@ -52,7 +51,12 @@ class Election:
     def __init__(self, config: ConfigFile):
         self.config = config
         self.election_returns = {name: 0 for name in self.config.candidates}
+        self.total_voters_by_party = {party: 0 for party in self.config.electorate.keys()}
+        self.total_candidates_voted_by_party = {party: 0 for party in self.config.electorate.keys()}
         self.strict_voters_by_party = {party: 0 for party in self.config.electorate.keys()} #count how many bullet voters there were by party
+        self.percent_strict_voters_by_party = {party: 0.0 for party in self.config.electorate.keys()}
+        self.avg_candidates_per_ballot_by_party = {party: 0.0 for party in self.config.electorate.keys()}
+
 
     def decide_vote(self, preferences):
         ballot_dict = {name: 0 for name in self.config.candidates}
@@ -74,16 +78,19 @@ class Election:
                 strict_vote_cast = [k for k, v in pref_sorted if v > 0][:self.config.electionSettings.ballotWinners] # only vote for preferences
                 if strict_vote_cast: #if list contains names
                     vote_cast = strict_vote_cast
+                    if (len(vote_cast) < self.config.electionSettings.ballotWinners):
+                        self.strict_voters_by_party[profile] += 1
                 else: #for rare cases of empty ballots
                     voter_preferences = self.config.voterProfiles[profile] 
                     pref_sorted = sorted(voter_preferences.items(), key=lambda x: x[1], reverse=True)
                     vote_cast = [candidate for candidate, _ in pref_sorted][:self.config.electionSettings.ballotWinners] #empty ballots will be filled by voter preference
-            self.strict_voters_by_party[profile] += 1
+        self.total_voters_by_party[profile] += 1
+        self.total_candidates_voted_by_party[profile] += len(vote_cast)
         return vote_cast
 
     def add_returns(self, ballot):
-        for i in ballot:
-            self.election_returns[i]+=1
+        for candidate in ballot:
+            self.election_returns[candidate]+=1
 
     def people_decide(self, electorate):
         for party, party_data in electorate.items():
@@ -94,6 +101,15 @@ class Election:
 
     def one_election(self):    
         self.people_decide(self.config.electorate)
+        
+        for party in self.strict_voters_by_party:
+            percent_strict = (self.strict_voters_by_party[party] / self.total_voters_by_party[party])
+            self.percent_strict_voters_by_party[party] = round(percent_strict,3)
+            
+        
+        for party in self.total_candidates_voted_by_party:
+            party_average = (self.total_candidates_voted_by_party[party] / self.total_voters_by_party[party])
+            self.avg_candidates_per_ballot_by_party[party] = round(party_average, 3)
         returns_sorted = dict(sortItems(self.election_returns)[0:self.config.electionSettings.ballotWinners])
         winners = list(returns_sorted.keys())
         return winners

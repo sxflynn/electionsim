@@ -22,7 +22,7 @@
         "totalVoters":1000,
         "ballotWinners":3,
         "SystemRandom":false,
-        "StrictPreferenceVoting":false
+        "StrictPreferenceVoting":true
     },
     "message":"This feature is unused."
 }
