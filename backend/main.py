@@ -1,3 +1,6 @@
+#debugging start
+import uvicorn
+#debugging end
 import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -5,16 +8,15 @@ from election_config import Config, ElectionResponse, ElectionSettings, SingleEl
 from election import ElectionSimulator, Election
 import random
 
-
-
 app = FastAPI()
-
 
 # CORS middleware settings
 origins = [
     "http://localhost:5173",  # Local development
     "http://127.0.0.1:5173",  # Alternative local development
+    "https://ballotbear.sxflynn.net",
     "https://staging.ballotbear.app",  # Staging domain
+    "https://electionsim-frontend.vercel.app", #Staging domain
     "https://vercel.app",  # Vercel staging
     "https://ballotbear.app",  # Production domain
 ]
@@ -77,3 +79,7 @@ def singleelection(config: Config):
     }
     single_election_response = SingleElectionResponse(**response_data)
     return single_election_response
+
+#debugging
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8005)
