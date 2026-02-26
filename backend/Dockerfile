@@ -1,23 +1,33 @@
-# Use an official Python runtime as a parent image
-FROM python:3.10-slim
+# syntax=docker/dockerfile:1.7
 
-# Set the working directory in the container
+FROM python:3.14-slim-trixie AS builder
+
+COPY --from=ghcr.io/astral-sh/uv:0.10.6 /uv /uvx /bin/
+
+ENV UV_COMPILE_BYTECODE=1
+
 WORKDIR /app
 
-# Install any needed packages specified in requirements.txt (if you have one)
-COPY requirements.txt .
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-install-project
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+COPY . /app
 
-# Copy the rest of your application code into the container
-COPY . .
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-editable
 
-# Make port 8000 available to the world outside this container
+
+FROM python:3.14-slim-trixie
+
+WORKDIR /app
+
+COPY --from=builder /app/.venv /app/.venv
+COPY --from=builder /app /app
+
+ENV PATH="/app/.venv/bin:$PATH"
+
 EXPOSE 8000
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
-
-# Run the application for production
-# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

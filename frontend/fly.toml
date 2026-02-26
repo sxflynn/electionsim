@@ -7,7 +7,7 @@ app = "react-electionsim"
 primary_region = "iad"
 
 [build]
-  dockerfile = "DockerfileProd"
+  dockerfile = "Dockerfile"
 
 [http_service]
   internal_port = 3000
