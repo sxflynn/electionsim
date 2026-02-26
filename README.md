@@ -1,18 +1,22 @@
 # Upper Arlington School Board Election Simulator
+
 Upper Arlington city elections for City Council and School Board typically have a list of candidates competing for multiple open seats. In a state or federal elections operating where voters only vote for one candidate to fill a single open seat, predicting elections take the form of polling and examining fundamentals. Predicting local elections where voters can select multiple candidates with multiple winners is more challenging.  
 
 ## Run command line tool
+
 1. With `python3` installed, run `pip install pydantic`
 1. Run `python3 election_cli.py` to run a simulation.
 1. To run a single election, add a single argument, like `python3 election_cli.py -s`
 
 ## Run web client with Docker
+
 1. Install `docker` and `docker-compose` -> [Download Docker Desktop client](https://www.docker.com/get-started/)
 1. `cd` to the project directory
 1. Run `docker-composer up`
 1. Open `http://localhost:5173` in the web browser.
 
 ## For beginners - How to run the command line tool, using Mac or Windows
+
 1. Install `python3` from the official Python [website](https://www.python.org/downloads/).
 1. [Download](https://github.com/sxflynn/electionsim/archive/refs/heads/main.zip) this repository to your computer as a zip file. Double click the zip file to unzip it as a folder called `electionsim-main`.
 1. [Windows only] Open the `electionsim-main.zip` file on your computer and make sure to click "Extract all..." so it gets extracted to a folder called `electionsim-main`.
@@ -24,6 +28,7 @@ Upper Arlington city elections for City Council and School Board typically have 
 1. To customize the electorate data, candidates and voter profiles, see below on working with the `config.json` file.
 
 ## How to use `config.json` to customize your election simulations
+
 The command line `election_cli.py` app reads in a local file `config.json` as its input. 
 
 | Config parameter  | Description |
@@ -36,6 +41,7 @@ The command line `election_cli.py` app reads in a local file `config.json` as it
 
 
 ### `voterProfiles` in depth:
+
 The aim of this program is to allow you to create custom voter profiles which represent the probability that a voter of that profile would add that candidate to their ballot. Let's walk through an example using the default values from the repository:
 
 *  `"DEM":{"Jenny McKenna":0.60` This says that given a single instance of a voter with the `DEM` profile, there is a 60% probability that they will add Jenny McKenna to their ballot. *What it does not represent is 60% of all `DEM` voters will cast a vote for Jenny McKenna.* There is a distinction.
@@ -43,15 +49,19 @@ The aim of this program is to allow you to create custom voter profiles which re
 *  `"IND":{"Jenny McKenna":0.90` This says that given a single instance of a voter with the `IND` profile, there is a 90% probability that they will add Jenny McKenna to their ballot.
 
 #### If a voter can only choose 3 candidates, but has a 90%+ probability of choosing 4, what happens?
+
 The program has a simple tie-breaking feature to ensure every voter only selects the number of candidates declared in the `ballotWinners` variable. Assuming you set that value to `3`, if a voter ends up selecting 4 candidates, three winners will be chosen from random of that set. Over hundreds of voters and hundreds of election sims, this introduces a small amount of entropy into the results.
 
 #### Does this program emulate bullet voting?
+
 Bullet voting is a strategy where a voter casts a ballot for fewer than the maximum allowed, to concentrate their support. This program automatically implements bullet voting by having voters only select candidates that exceed their support threshold. For example, if a voter has an 80% and 90% probability of selecting Candidate A, Candidate B respectively, and the random number generated is `0.85`, the voter will only select Candidate B, since Candidate A's 80% threshold from the profile is lower than the `0.85` value.
 
 #### Where do voter profile numbers come from?
+
 In a typical local election, there are no polls to draw from to guess electoral outcomes. That means that you have to use your own knowledge and intuition to assign these numbers. Given that school board elections have become polarized, you can make an educated guess on how likely a `DEM` or `GOP` voter would select a specific candidate.
 
 ### Reading the results:
+
 The `election_cli.py` program will output list with `candidates`, `numberOfWins`, and `probabilityToWin`. 
 
 This is an example of one possible outcome based on a custom set of voter profiles. In this case, `300` elections were run, and the probability of a candidate winning is simple `numberOfWins` divided by the total number of elections. For example, `247/500 = 0.823` which is 82.3% probability.

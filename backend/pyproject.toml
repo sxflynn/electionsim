@@ -1,0 +1,12 @@
+[project]
+name = "electionsim"
+version = "0.1.0"
+description = "Simulate the Upper Arlington local elections"
+authors = [
+    { name = "Stephen Flynn", email = "stephenflynn@me.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi>=0.120.4",
+    "uvicorn>=0.41.0",
+]
